@@ -36,6 +36,7 @@ jobs:
           yarn version --patch
           git push --tags
           git push
+          rm -rf src .vscode .github tsconfig.json tsconfig-cjs.json .prettierrc
           yarn publish
         env:
           NODE_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
