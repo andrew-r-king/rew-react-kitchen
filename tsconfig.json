@@ -28,11 +28,12 @@
         "preserveWatchOutput": true,
         "preserveConstEnums": true,
         "skipLibCheck": true,
-        "jsx": "react"
+        "jsx": "react",
+        "baseUrl": "./src"
     },
     "include": [
-        "src/**/*.ts",
-        "src/**/*.tsx"
+        "**/*.ts",
+        "**/*.tsx"
     ],
     "exclude": [
         "node_modules"
