@@ -14,17 +14,17 @@ A place for all of this complex typescript & react-related boilerplate
 import { BaseApi } from "@andrew-r-king/react-kitchen";
 
 export type DadJoke = {
-	setup: string;
-	punchline: string;
+    setup: string;
+    punchline: string;
 };
 
 class DadJokesApi extends BaseApi {
-	constructor() {
-		super("https://api.dadjokes.space");
-	}
+    constructor() {
+        super("https://api.dadjokes.space");
+    }
 
-	// this.GET returns Promise<DadJoke>
-	getRandomJoke = () => this.GET<DadJoke>("/joke");
+    // this.GET returns Promise<DadJoke>
+    getRandomJoke = () => this.GET<DadJoke>("/joke");
 }
 
 const dadJokes = new DadJokesApi();
@@ -41,25 +41,25 @@ import { useAsyncEffect } from "@andrew-r-king/react-kitchen";
 import { dadJokes } from "Api/DadJokes";
 
 const JokesLayout = () => {
-	const [joke, loading, error, cache] = useAsyncEffect(dadJokes.getRandomJoke, [maxJokes]);
+    const [joke, loading, error, cache] = useAsyncEffect(dadJokes.getRandomJoke, [maxJokes]);
 
-	// Removes the cached content when the component unmounts
-	// useEffect(() => cache.remove, []);
+    // Removes the cached content when the component unmounts
+    // useEffect(() => cache.remove, []);
 
-	return (
-		<div>
-			{loading ? (
-				<>Loading...</>
-			) : error ? (
-				<>Error: {error}</>
-			) : joke ? (
-				<>
-					<div className="setup">{joke.setup}</div>
-					<div className="punchline">{joke.punchline}</div>
-				</>
-			) : null}
-		</div>
-	);
+    return (
+        <div>
+            {loading ? (
+                <>Loading...</>
+            ) : error ? (
+                <>Error: {error}</>
+            ) : joke ? (
+                <>
+                    <div className="setup">{joke.setup}</div>
+                    <div className="punchline">{joke.punchline}</div>
+                </>
+            ) : null}
+        </div>
+    );
 };
 ```
 
@@ -75,13 +75,13 @@ import { asyncEffectCache } from "@andrew-r-king/react-kitchen";
 // Save the cache id for later and remove them manually when the component unmounts
 const [cachedIds, setCachedIds] = useState<number[]>([]);
 useEffect(() => {
-	setCachedIds((prev) => {
-		prev.push(cache.id);
-		return prev;
-	});
-	return () => {
-		asyncEffectCache.clearEntriesById(cachedIds);
-	};
+    setCachedIds((prev) => {
+        prev.push(cache.id);
+        return prev;
+    });
+    return () => {
+        asyncEffectCache.clearEntriesById(cachedIds);
+    };
 }, [cache.id]);
 
 ...
@@ -95,23 +95,23 @@ useEffect(() => {
 import { BaseState, Action } from "@andrew-r-king/react-kitchen";
 
 class CounterState extends BaseState {
-	count: number = 0;
+    count: number = 0;
 
-	constructor(public min: number = 0, public max: number = 10, public defaultValue: number = 5) {
-		super();
+    constructor(public min: number = 0, public max: number = 10, public defaultValue: number = 5) {
+        super();
 
-		this.count = this.defaultValue;
-	}
+        this.count = this.defaultValue;
+    }
 
-	@Action
-	increase = (amount: number) => {
-		if (this.count + amount <= this.max) this.count += amount;
-	};
+    @Action
+    increase = (amount: number) => {
+        if (this.count + amount <= this.max) this.count += amount;
+    };
 
-	@Action
-	decrease = (amount: number) => {
-		if (this.count - amount >= this.min) this.count -= amount;
-	};
+    @Action
+    decrease = (amount: number) => {
+        if (this.count - amount >= this.min) this.count -= amount;
+    };
 }
 
 export { CounterState };
@@ -121,13 +121,13 @@ Note about decorators: they are still experimental and your mileage with BaseSta
 
 ```json
 {
-	"module": "esnext",
-	"jsx": "react-jsx",
-	"moduleResolution": "node",
-	"esModuleInterop": true,
-	"experimentalDecorators": true,
-	"emitDecoratorMetadata": true
-	...
+    "module": "esnext",
+    "jsx": "react-jsx",
+    "moduleResolution": "node",
+    "esModuleInterop": true,
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true
+    ...
 }
 ```
 
@@ -190,14 +190,14 @@ import { makeRoutes, RouteProps } from "@andrew-r-king/react-kitchen";
 import { JokesLayout, HomeLayout, NotFoundLayout, CountersLayout } from "Layouts";
 
 const routes: RouteProps[] = [
-	{
-		path: "/jokes",
-		component: JokesLayout,
-	},
-	{
-		path: "/counters",
-		component: CountersLayout,
-	},
+    {
+        path: "/jokes",
+        component: JokesLayout,
+    },
+    {
+        path: "/counters",
+        component: CountersLayout,
+    },
 ];
 
 const Routes = makeRoutes(routes, HomeLayout, NotFoundLayout);

@@ -29,10 +29,6 @@ jobs:
           NODE_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
       - name: 'Remove old node_modules'
         run: rm -rf node_modules
-      - name: 'yarn install'
-        run: yarn install
-      - name: 'yarn build'
-        run: yarn build
       - name: 'configure git'
         run: |
           git config --global user.email "$GITHUB_ACTOR@users.noreply.github.com"
