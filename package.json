@@ -1,5 +1,5 @@
 {
-	"name": "@rew/react-kitchen",
+	"name": "@andrew-r-king/react-kitchen",
 	"version": "0.0.1",
 	"author": "Andrew R. King",
 	"description": "A set of helpful React components designed to give one less headaches",
@@ -10,9 +10,8 @@
 	"scripts": {
 		"build": "rm -rf dist && mkdir dist && tsc -p tsconfig.json && tsc -p tsconfig-cjs.json"
 	},
-	"private": true,
 	"publishConfig": {
-		"registry": "https://npm.pkg.github.com/"
+		"registry": "https://npm.pkg.github.com/@andrew-r-king"
 	},
 	"repository": {
 		"url": "git@github.com:andrew-r-king/rew-react-kitchen.git"
