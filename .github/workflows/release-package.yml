@@ -14,7 +14,6 @@ jobs:
     steps:
       - run: |
           sudo apt-get install yarn
-          git config --global user.email "$GITHUB_ACTOR@users.noreply.github.com" && git config --global user.name "$GITHUB_ACTOR"
 
   build:
     needs: get-dependencies
@@ -31,6 +30,7 @@ jobs:
       - run: |
           rm -rf node_modules && yarn install --frozen-lockfile
           yarn build
+          git config --global user.email "$GITHUB_ACTOR@users.noreply.github.com" && git config --global user.name "$GITHUB_ACTOR"
           yarn version --patch
           git push --tags && git push
           yarn publish
