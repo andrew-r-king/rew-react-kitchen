@@ -17,6 +17,10 @@
 	"repository": {
 		"url": "git@github.com:andrew-r-king/rew-react-kitchen.git"
 	},
+	"keywords": [
+		"typescript",
+		"react"
+	],
 	"peerDependencies": {
 		"react": ">=16.14.1",
 		"react-dom": ">=16.14.1"
