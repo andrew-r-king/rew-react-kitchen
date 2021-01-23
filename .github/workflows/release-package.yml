@@ -12,7 +12,9 @@ jobs:
   get-dependencies:
     runs-on: ubuntu-latest
     steps:
-      - run: sudo apt-get install yarn
+      - run: |
+          sudo apt-get install yarn
+          git config --global user.email "$GITHUB_ACTOR@users.noreply.github.com" && git config --global user.name "$GITHUB_ACTOR"
 
   build:
     needs: get-dependencies
@@ -22,21 +24,15 @@ jobs:
       - uses: actions/setup-node@v1
         with:
           node-version: 12
-      - run: rm -rf node_modules && yarn install --frozen-lockfile
-      - run: yarn build
-      - run: git config --global user.email "$GITHUB_ACTOR@users.noreply.github.com" && git config --global user.name "$GITHUB_ACTOR"
-      - run: yarn version --patch
-      - run: git push --tags && git push
-
-  publish-gpr:
-    needs: build
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/setup-node@v1
-        with:
-          node-version: 12
           registry-url: https://npm.pkg.github.com/
           scope: "@andrew-r-king"
-      - run: yarn publish
+        env:
+          NODE_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
+      - run: |
+          rm -rf node_modules && yarn install --frozen-lockfile
+          yarn build
+          yarn version --patch
+          git push --tags && git push
+          yarn publish
         env:
           NODE_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
