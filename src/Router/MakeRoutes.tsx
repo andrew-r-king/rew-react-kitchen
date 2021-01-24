@@ -7,7 +7,6 @@ export type RoutePropsNormal = {
 	caseSensitive?: boolean;
 	children?: RouteProps[];
 	element?: React.ReactNode;
-	redirectTo?: string;
 	path?: string;
 };
 
@@ -42,15 +41,17 @@ const makeRoutes = (
 		});
 	}
 
-	const outRoutes: RoutePropsNormal[] = inRoutes.map(({ redirectTo, ...route }) => {
-		if (!!redirectTo) {
-			return {
-				...route,
-				element: <Navigate to={redirectTo} replace />,
-			};
+	const outRoutes: RoutePropsNormal[] = (inRoutes as (RoutePropsNormal & RoutePropsRedirect)[]).map(
+		({ redirectTo, ...route }) => {
+			if (!!redirectTo) {
+				return {
+					...route,
+					element: <Navigate to={redirectTo} replace />,
+				};
+			}
+			return route;
 		}
-		return route;
-	});
+	);
 
 	const Routes = React.memo(() => {
 		const element = useRoutes(outRoutes);

@@ -5,7 +5,6 @@ export declare type RoutePropsNormal = {
     caseSensitive?: boolean;
     children?: RouteProps[];
     element?: React.ReactNode;
-    redirectTo?: string;
     path?: string;
 };
 export declare type RoutePropsRedirect = {
