@@ -1,2 +1,2 @@
 export * from "./MakeRoutes";
-export * from "./NavLink";
+export * from "./Link";

@@ -1,3 +1,3 @@
 export * from "./MakeRoutes";
-export * from "./NavLink";
+export * from "./Link";
 //# sourceMappingURL=index.js.map
