@@ -17,8 +17,8 @@ type ComponentType = React.ComponentType<RouteComponentProps<any>> | React.Compo
 export type RouteProps = ReactRouterDomRouteProps;
 
 function makeRoutes(inRoutes: RouteProps[], homeComponent: ComponentType, notFoundComponent: ComponentType) {
-	return () => {
-		const routemap = React.useMemo(() => {
+	return React.memo(() => {
+		const routemap = () => {
 			const outRoutes = [
 				...inRoutes,
 				{
@@ -34,7 +34,7 @@ function makeRoutes(inRoutes: RouteProps[], homeComponent: ComponentType, notFou
 			return outRoutes.map((route, i) => {
 				return <Route key={i} {...route} />;
 			});
-		}, []);
+		};
 
 		const history = React.useMemo(() => createBrowserHistory(), []);
 
@@ -43,7 +43,7 @@ function makeRoutes(inRoutes: RouteProps[], homeComponent: ComponentType, notFou
 				<Switch>{routemap}</Switch>
 			</Router>
 		);
-	};
+	});
 }
 
 export { makeRoutes, useHistory, useLocation, useParams, useRouteMatch };
