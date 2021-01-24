@@ -1,7 +1,5 @@
-import React from "react";
-import { NavLinkProps } from "react-router-dom";
-declare type Props = NavLinkProps & React.RefAttributes<HTMLAnchorElement> & {
-    activeStyle?: React.CSSProperties;
+import { LinkProps } from "react-router-dom";
+declare type Props = LinkProps & {
     label?: string;
 };
 declare const Link: ({ children, label, ...props }: Props) => JSX.Element;

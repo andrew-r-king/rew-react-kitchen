@@ -21,10 +21,10 @@ var __rest = (this && this.__rest) || function (s, e) {
     return t;
 };
 import React from "react";
-import { Link as ReactRouterLink } from "react-router-dom";
-var Link = function (_a) {
-    var children = _a.children, label = _a.label, props = __rest(_a, ["children", "label"]);
-    return React.createElement(ReactRouterLink, __assign({}, props), label !== null && label !== void 0 ? label : children);
+import { NavLink as ReactRouterNavLink } from "react-router-dom";
+var NavLink = function (_a) {
+    var children = _a.children, label = _a.label, exact = _a.exact, activeClassName = _a.activeClassName, props = __rest(_a, ["children", "label", "exact", "activeClassName"]);
+    return (React.createElement(ReactRouterNavLink, __assign({}, props, { end: !!exact, activeClassName: activeClassName !== null && activeClassName !== void 0 ? activeClassName : "is-active" }), label !== null && label !== void 0 ? label : children));
 };
-export { Link };
-//# sourceMappingURL=Link.js.map
+export { NavLink };
+//# sourceMappingURL=NavLink.js.map

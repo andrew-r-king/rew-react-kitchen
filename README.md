@@ -182,7 +182,9 @@ counterStore.increase();
 
 **Router/useMatch** - same as react-router-dom/useMatch
 
-**Router/Link** - wrapper around react-router-dom/NavLink that adds typing to the 'activeStyle' prop and adds an extra 'label' prop as an alternative to using children
+**Router/Link** - wrapper around react-router-dom/Link that adds an extra 'label' prop as an alternative to children
+
+**Router/NavLink** - wrapper around react-router-dom/NavLink that adds an extra 'label' prop as an alternative to children, adds typing to the 'activeStyle' prop, adds a fallback to activeClassName of 'is-active', and brings back 'exact' instead of v6's 'end'
 
 Note: See [v6 migration guide for details](https://github.com/ReactTraining/react-router/blob/f59ee5488bc343cf3c957b7e0cc395ef5eb572d2/docs/advanced-guides/migrating-5-to-6.md)
 
