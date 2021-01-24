@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useMemo } from "react";
 import { createBrowserHistory } from "history";
 import {
 	Router,
@@ -18,29 +18,27 @@ export type RouteProps = ReactRouterDomRouteProps;
 
 function makeRoutes(inRoutes: RouteProps[], homeComponent: ComponentType, notFoundComponent: ComponentType) {
 	return React.memo(() => {
-		const routemap = () => {
-			const outRoutes = [
-				...inRoutes,
-				{
-					path: "/(.+)",
-					component: notFoundComponent,
-				},
-				{
-					path: "/",
-					component: homeComponent,
-				},
-			];
+		const outRoutes = [
+			...inRoutes,
+			{
+				path: "/(.+)",
+				component: notFoundComponent,
+			},
+			{
+				path: "/",
+				component: homeComponent,
+			},
+		];
 
-			return outRoutes.map((route, i) => {
-				return <Route key={i} {...route} />;
-			});
-		};
+		const routeMap = outRoutes.map((route, i) => {
+			return <Route key={i} {...route} />;
+		});
 
-		const history = React.useMemo(() => createBrowserHistory(), []);
+		const history = useMemo(() => createBrowserHistory(), []);
 
 		return (
 			<Router history={history}>
-				<Switch>{routemap}</Switch>
+				<Switch>{routeMap}</Switch>
 			</Router>
 		);
 	});
