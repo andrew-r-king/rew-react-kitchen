@@ -170,19 +170,21 @@ counterStore.increase();
 
 ---
 
-**Router/makeRoutes** - Wrapper around react-router-dom that takes in some routes and returns a component. It also creates a history instance and places a Home & 404 layout where they need to be in the route Switch
+**Router/makeRoutes** - Wrapper around react-router-dom v6 (useRoutes) that takes in some routes and returns a component. It can also accept a Home & 404 layout which will conveniently crate those automatically
 
-**Router/useHistory** - same as react-router-dom/useHistory
+**Router/Navigate** - same as react-router-dom/Navigate (v6 component for manual redirects)
+
+**Router/useNavigate** - same as react-router-dom/useNavigate
 
 **Router/useLocation** - same as react-router-dom/useLocation
 
 **Router/useParams** - same as react-router-dom/useParams
 
-**Router/useRouteMatch** - same as react-router-dom/useRouteMatch
+**Router/useMatch** - same as react-router-dom/useMatch
 
 **Router/NavLink** - same as react-router-dom/Link
 
-Note: The goal ultimately is not needing the react-router-dom import
+Note: See [v6 migration guide for details](https://github.com/ReactTraining/react-router/blob/f59ee5488bc343cf3c957b7e0cc395ef5eb572d2/docs/advanced-guides/migrating-5-to-6.md)
 
 ```tsx
 import { makeRoutes, RouteProps } from "@andrew-r-king/react-kitchen";

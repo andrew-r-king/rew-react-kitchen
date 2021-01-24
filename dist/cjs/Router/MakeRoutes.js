@@ -10,46 +10,63 @@ var __assign = (this && this.__assign) || function () {
     };
     return __assign.apply(this, arguments);
 };
-var __spreadArrays = (this && this.__spreadArrays) || function () {
-    for (var s = 0, i = 0, il = arguments.length; i < il; i++) s += arguments[i].length;
-    for (var r = Array(s), k = 0, i = 0; i < il; i++)
-        for (var a = arguments[i], j = 0, jl = a.length; j < jl; j++, k++)
-            r[k] = a[j];
-    return r;
+var __rest = (this && this.__rest) || function (s, e) {
+    var t = {};
+    for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p) && e.indexOf(p) < 0)
+        t[p] = s[p];
+    if (s != null && typeof Object.getOwnPropertySymbols === "function")
+        for (var i = 0, p = Object.getOwnPropertySymbols(s); i < p.length; i++) {
+            if (e.indexOf(p[i]) < 0 && Object.prototype.propertyIsEnumerable.call(s, p[i]))
+                t[p[i]] = s[p[i]];
+        }
+    return t;
 };
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.useRouteMatch = exports.useParams = exports.useLocation = exports.useHistory = exports.makeRoutes = void 0;
+exports.useMatch = exports.useParams = exports.useLocation = exports.useNavigate = exports.Navigate = exports.makeRoutes = void 0;
 var react_1 = __importDefault(require("react"));
-var history_1 = require("history");
 var react_router_dom_1 = require("react-router-dom");
-Object.defineProperty(exports, "useHistory", { enumerable: true, get: function () { return react_router_dom_1.useHistory; } });
+Object.defineProperty(exports, "Navigate", { enumerable: true, get: function () { return react_router_dom_1.Navigate; } });
+Object.defineProperty(exports, "useNavigate", { enumerable: true, get: function () { return react_router_dom_1.useNavigate; } });
 Object.defineProperty(exports, "useLocation", { enumerable: true, get: function () { return react_router_dom_1.useLocation; } });
 Object.defineProperty(exports, "useParams", { enumerable: true, get: function () { return react_router_dom_1.useParams; } });
-Object.defineProperty(exports, "useRouteMatch", { enumerable: true, get: function () { return react_router_dom_1.useRouteMatch; } });
-function makeRoutes(inRoutes, homeComponent, notFoundComponent) {
-    return function () {
-        var routemap = react_1.default.useMemo(function () {
-            var outRoutes = __spreadArrays(inRoutes, [
-                {
-                    path: "/(.+)",
-                    component: notFoundComponent,
-                },
-                {
-                    path: "/",
-                    component: homeComponent,
-                },
-            ]);
-            return outRoutes.map(function (route, i) {
-                return react_1.default.createElement(react_router_dom_1.Route, __assign({ key: i }, route));
-            });
-        }, []);
-        var history = react_1.default.useMemo(function () { return history_1.createBrowserHistory(); }, []);
-        return (react_1.default.createElement(react_router_dom_1.Router, { history: history },
-            react_1.default.createElement(react_router_dom_1.Switch, null, routemap)));
-    };
-}
+Object.defineProperty(exports, "useMatch", { enumerable: true, get: function () { return react_router_dom_1.useMatch; } });
+var makeRoutes = function (inRoutes, HomeComponent, NotFoundComponent) {
+    if (HomeComponent === void 0) { HomeComponent = null; }
+    if (NotFoundComponent === void 0) { NotFoundComponent = null; }
+    if (!!HomeComponent) {
+        inRoutes.push({
+            path: "/",
+            element: react_1.default.createElement(HomeComponent, null),
+        });
+    }
+    if (!!NotFoundComponent) {
+        inRoutes.push({
+            path: "*",
+            element: react_1.default.createElement(NotFoundComponent, null),
+        });
+    }
+    else {
+        inRoutes.push({
+            path: "*",
+            redirectTo: "/",
+        });
+    }
+    var outRoutes = inRoutes.map(function (_a) {
+        var redirectTo = _a.redirectTo, route = __rest(_a, ["redirectTo"]);
+        if (!!redirectTo) {
+            return __assign(__assign({}, route), { element: react_1.default.createElement(react_router_dom_1.Navigate, { to: redirectTo, replace: true }) });
+        }
+        return route;
+    });
+    var Routes = react_1.default.memo(function () {
+        var element = react_router_dom_1.useRoutes(outRoutes);
+        return element;
+    });
+    return react_1.default.memo(function () { return (react_1.default.createElement(react_router_dom_1.BrowserRouter, null,
+        react_1.default.createElement(Routes, null))); });
+};
 exports.makeRoutes = makeRoutes;
 //# sourceMappingURL=MakeRoutes.js.map

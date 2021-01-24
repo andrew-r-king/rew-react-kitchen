@@ -9,37 +9,53 @@ var __assign = (this && this.__assign) || function () {
     };
     return __assign.apply(this, arguments);
 };
-var __spreadArrays = (this && this.__spreadArrays) || function () {
-    for (var s = 0, i = 0, il = arguments.length; i < il; i++) s += arguments[i].length;
-    for (var r = Array(s), k = 0, i = 0; i < il; i++)
-        for (var a = arguments[i], j = 0, jl = a.length; j < jl; j++, k++)
-            r[k] = a[j];
-    return r;
+var __rest = (this && this.__rest) || function (s, e) {
+    var t = {};
+    for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p) && e.indexOf(p) < 0)
+        t[p] = s[p];
+    if (s != null && typeof Object.getOwnPropertySymbols === "function")
+        for (var i = 0, p = Object.getOwnPropertySymbols(s); i < p.length; i++) {
+            if (e.indexOf(p[i]) < 0 && Object.prototype.propertyIsEnumerable.call(s, p[i]))
+                t[p[i]] = s[p[i]];
+        }
+    return t;
 };
 import React from "react";
-import { createBrowserHistory } from "history";
-import { Router, Route, Switch, useHistory, useLocation, useParams, useRouteMatch, } from "react-router-dom";
-function makeRoutes(inRoutes, homeComponent, notFoundComponent) {
-    return function () {
-        var routemap = React.useMemo(function () {
-            var outRoutes = __spreadArrays(inRoutes, [
-                {
-                    path: "/(.+)",
-                    component: notFoundComponent,
-                },
-                {
-                    path: "/",
-                    component: homeComponent,
-                },
-            ]);
-            return outRoutes.map(function (route, i) {
-                return React.createElement(Route, __assign({ key: i }, route));
-            });
-        }, []);
-        var history = React.useMemo(function () { return createBrowserHistory(); }, []);
-        return (React.createElement(Router, { history: history },
-            React.createElement(Switch, null, routemap)));
-    };
-}
-export { makeRoutes, useHistory, useLocation, useParams, useRouteMatch };
+import { BrowserRouter, Navigate, useNavigate, useLocation, useParams, useMatch, useRoutes } from "react-router-dom";
+var makeRoutes = function (inRoutes, HomeComponent, NotFoundComponent) {
+    if (HomeComponent === void 0) { HomeComponent = null; }
+    if (NotFoundComponent === void 0) { NotFoundComponent = null; }
+    if (!!HomeComponent) {
+        inRoutes.push({
+            path: "/",
+            element: React.createElement(HomeComponent, null),
+        });
+    }
+    if (!!NotFoundComponent) {
+        inRoutes.push({
+            path: "*",
+            element: React.createElement(NotFoundComponent, null),
+        });
+    }
+    else {
+        inRoutes.push({
+            path: "*",
+            redirectTo: "/",
+        });
+    }
+    var outRoutes = inRoutes.map(function (_a) {
+        var redirectTo = _a.redirectTo, route = __rest(_a, ["redirectTo"]);
+        if (!!redirectTo) {
+            return __assign(__assign({}, route), { element: React.createElement(Navigate, { to: redirectTo, replace: true }) });
+        }
+        return route;
+    });
+    var Routes = React.memo(function () {
+        var element = useRoutes(outRoutes);
+        return element;
+    });
+    return React.memo(function () { return (React.createElement(BrowserRouter, null,
+        React.createElement(Routes, null))); });
+};
+export { makeRoutes, Navigate, useNavigate, useLocation, useParams, useMatch };
 //# sourceMappingURL=MakeRoutes.js.map
