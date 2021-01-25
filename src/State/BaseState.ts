@@ -5,7 +5,9 @@ import { ActionType, ActionEvent } from "./ActionType";
 
 export abstract class BaseState {
 	private dispatch: Optional<React.Dispatch<ActionEvent>> = null;
-	private deferredDispatches: any[] = [];
+	private deferred: any[] = [];
+	private deferCount: number = 0;
+	private isDeferring: boolean = false;
 
 	protected setDispatcher = (dispatcher: Optional<React.Dispatch<ActionEvent>>) => {
 		this.dispatch = dispatcher;
@@ -16,6 +18,7 @@ export abstract class BaseState {
 		if (isServer) return;
 
 		if (this.dispatch === null) {
+			console.warn("reset call failed: no dispatcher", this);
 			return;
 		}
 
@@ -24,32 +27,53 @@ export abstract class BaseState {
 		});
 	};
 
-	private dispatchStateInternal = (payload: any) => {
-		const isServer = typeof window === "undefined";
-		if (isServer) return;
-
+	private dispatchDeferredState = () => {
 		if (this.dispatch === null) {
-			// typically just errors during a react rebuild
-			this.deferredDispatches.push(payload);
+			this.deferCount++;
+
+			if (this.deferCount > 25) {
+				console.warn("Deferred state failed to dispatch for: ", this);
+				this.deferCount = 0;
+				this.deferred = [];
+				this.isDeferring = false;
+			} else {
+				setTimeout(() => this.dispatchDeferredState(), 10);
+			}
+
 			return;
 		}
 
-		if (this.deferredDispatches.length > 0) {
+		if (this.deferred.length > 0) {
 			let updates: any = {};
-			while (this.deferredDispatches.length > 0) {
-				const data = this.deferredDispatches.shift();
-				console.log(data);
+			while (this.deferred.length > 0) {
+				const data = this.deferred.shift();
 				updates = {
 					...updates,
 					...data,
 				};
 			}
 
-			payload = {
-				...updates,
-				...payload,
-			};
-			console.log("deferredPayload: ", payload, updates);
+			this.dispatch({
+				type: ActionType.Bound,
+				payload: updates,
+			});
+		}
+
+		this.isDeferring = false;
+	};
+
+	private dispatchStateInternal = (payload: any) => {
+		const isServer = typeof window === "undefined";
+		if (isServer) return;
+
+		if (this.dispatch === null) {
+			this.deferred.push(payload);
+			this.deferCount++;
+			if (!this.isDeferring) {
+				setTimeout(() => this.dispatchDeferredState(), 10);
+				this.isDeferring = true;
+			}
+			return;
 		}
 
 		this.dispatch({

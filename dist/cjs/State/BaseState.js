@@ -25,7 +25,9 @@ var BaseState = /** @class */ (function () {
     function BaseState() {
         var _this = this;
         this.dispatch = null;
-        this.deferredDispatches = [];
+        this.deferred = [];
+        this.deferCount = 0;
+        this.isDeferring = false;
         this.setDispatcher = function (dispatcher) {
             _this.dispatch = dispatcher;
         };
@@ -34,30 +36,52 @@ var BaseState = /** @class */ (function () {
             if (isServer)
                 return;
             if (_this.dispatch === null) {
+                console.warn("reset call failed: no dispatcher", _this);
                 return;
             }
             _this.dispatch({
                 type: ActionType_1.ActionType.Reset,
             });
         };
+        this.dispatchDeferredState = function () {
+            if (_this.dispatch === null) {
+                _this.deferCount++;
+                if (_this.deferCount > 25) {
+                    console.warn("Deferred state failed to dispatch for: ", _this);
+                    _this.deferCount = 0;
+                    _this.deferred = [];
+                    _this.isDeferring = false;
+                }
+                else {
+                    setTimeout(function () { return _this.dispatchDeferredState(); }, 10);
+                }
+                return;
+            }
+            if (_this.deferred.length > 0) {
+                var updates = {};
+                while (_this.deferred.length > 0) {
+                    var data = _this.deferred.shift();
+                    updates = __assign(__assign({}, updates), data);
+                }
+                _this.dispatch({
+                    type: ActionType_1.ActionType.Bound,
+                    payload: updates,
+                });
+            }
+            _this.isDeferring = false;
+        };
         this.dispatchStateInternal = function (payload) {
             var isServer = typeof window === "undefined";
             if (isServer)
                 return;
             if (_this.dispatch === null) {
-                // typically just errors during a react rebuild
-                _this.deferredDispatches.push(payload);
-                return;
-            }
-            if (_this.deferredDispatches.length > 0) {
-                var updates = {};
-                while (_this.deferredDispatches.length > 0) {
-                    var data = _this.deferredDispatches.shift();
-                    console.log(data);
-                    updates = __assign(__assign({}, updates), data);
+                _this.deferred.push(payload);
+                _this.deferCount++;
+                if (!_this.isDeferring) {
+                    setTimeout(function () { return _this.dispatchDeferredState(); }, 10);
+                    _this.isDeferring = true;
                 }
-                payload = __assign(__assign({}, updates), payload);
-                console.log("deferredPayload: ", payload, updates);
+                return;
             }
             _this.dispatch({
                 type: ActionType_1.ActionType.Bound,
