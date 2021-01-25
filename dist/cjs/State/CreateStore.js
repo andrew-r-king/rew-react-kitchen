@@ -57,7 +57,7 @@ function createStore(classConstructor) {
                 inst.setDispatcher(null);
             };
             // eslint-disable-next-line
-        }, []);
+        }, [inst, dispatcher]);
         return react_1.default.createElement(InternalContext.Provider, { value: state }, props.children);
     };
     var Context = function () { return react_1.useContext(InternalContext); };
