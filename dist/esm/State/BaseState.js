@@ -50,7 +50,7 @@ var BaseState = /** @class */ (function () {
                 var updates = {};
                 while (_this.deferredDispatches.length > 0) {
                     var data = _this.deferredDispatches.shift();
-                    updates = __assign({}, data);
+                    updates = __assign(__assign({}, updates), data);
                 }
                 payload = __assign(__assign({}, updates), payload);
             }

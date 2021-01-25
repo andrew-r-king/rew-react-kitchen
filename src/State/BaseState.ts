@@ -39,6 +39,7 @@ export abstract class BaseState {
 			while (this.deferredDispatches.length > 0) {
 				const data = this.deferredDispatches.shift();
 				updates = {
+					...updates,
 					...data,
 				};
 			}
