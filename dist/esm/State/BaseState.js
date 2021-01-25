@@ -1,3 +1,14 @@
+var __assign = (this && this.__assign) || function () {
+    __assign = Object.assign || function(t) {
+        for (var s, i = 1, n = arguments.length; i < n; i++) {
+            s = arguments[i];
+            for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
+                t[p] = s[p];
+        }
+        return t;
+    };
+    return __assign.apply(this, arguments);
+};
 var __spreadArrays = (this && this.__spreadArrays) || function () {
     for (var s = 0, i = 0, il = arguments.length; i < il; i++) s += arguments[i].length;
     for (var r = Array(s), k = 0, i = 0; i < il; i++)
@@ -35,12 +46,13 @@ var BaseState = /** @class */ (function () {
                 _this.deferredDispatches.push(payload);
                 return;
             }
-            while (_this.deferredDispatches.length > 0) {
-                var data = _this.deferredDispatches.shift();
-                _this.dispatch({
-                    type: ActionType.Bound,
-                    payload: data,
-                });
+            if (_this.deferredDispatches.length > 0) {
+                var updates = {};
+                while (_this.deferredDispatches.length > 0) {
+                    var data = _this.deferredDispatches.shift();
+                    updates = __assign({}, data);
+                }
+                payload = __assign(__assign({}, updates), payload);
             }
             _this.dispatch({
                 type: ActionType.Bound,

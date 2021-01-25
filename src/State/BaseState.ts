@@ -34,12 +34,19 @@ export abstract class BaseState {
 			return;
 		}
 
-		while (this.deferredDispatches.length > 0) {
-			const data = this.deferredDispatches.shift();
-			this.dispatch({
-				type: ActionType.Bound,
-				payload: data,
-			});
+		if (this.deferredDispatches.length > 0) {
+			let updates: any = {};
+			while (this.deferredDispatches.length > 0) {
+				const data = this.deferredDispatches.shift();
+				updates = {
+					...data,
+				};
+			}
+
+			payload = {
+				...updates,
+				...payload,
+			};
 		}
 
 		this.dispatch({
