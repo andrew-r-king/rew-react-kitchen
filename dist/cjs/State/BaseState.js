@@ -14,6 +14,7 @@ var BaseState = /** @class */ (function () {
     function BaseState() {
         var _this = this;
         this.dispatch = null;
+        this.deferredDispatches = [];
         this.setDispatcher = function (dispatcher) {
             _this.dispatch = dispatcher;
         };
@@ -22,7 +23,6 @@ var BaseState = /** @class */ (function () {
             if (isServer)
                 return;
             if (_this.dispatch === null) {
-                console.error("reset call failed: no dispatcher", _this);
                 return;
             }
             _this.dispatch({
@@ -35,8 +35,15 @@ var BaseState = /** @class */ (function () {
                 return;
             if (_this.dispatch === null) {
                 // typically just errors during a react rebuild
-                console.error("dispatch call failed: no dispatcher", payload);
+                _this.deferredDispatches.push(payload);
                 return;
+            }
+            while (_this.deferredDispatches.length > 0) {
+                var data = _this.deferredDispatches.shift();
+                _this.dispatch({
+                    type: ActionType_1.ActionType.Bound,
+                    payload: data,
+                });
             }
             _this.dispatch({
                 type: ActionType_1.ActionType.Bound,

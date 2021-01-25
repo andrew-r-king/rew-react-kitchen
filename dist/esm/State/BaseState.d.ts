@@ -4,6 +4,7 @@ import { Optional } from "../Types";
 import { ActionEvent } from "./ActionType";
 export declare abstract class BaseState {
     private dispatch;
+    private deferredDispatches;
     protected setDispatcher: (dispatcher: Optional<React.Dispatch<ActionEvent>>) => void;
     reset: () => void;
     private dispatchStateInternal;

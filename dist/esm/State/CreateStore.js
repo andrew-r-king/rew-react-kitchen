@@ -35,7 +35,7 @@ export function createStore(classConstructor) {
                 inst.setDispatcher(null);
             };
             // eslint-disable-next-line
-        }, [inst, dispatcher]);
+        }, [inst]);
         return React.createElement(InternalContext.Provider, { value: state }, props.children);
     };
     var Context = function () { return useContext(InternalContext); };
