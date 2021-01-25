@@ -36,7 +36,7 @@ export function createStore<T extends BaseState>(classConstructor: ClassType<T>)
 				(inst as any).setDispatcher(null);
 			};
 			// eslint-disable-next-line
-		}, [inst]);
+		}, []);
 
 		return <InternalContext.Provider value={state}>{props.children}</InternalContext.Provider>;
 	};
