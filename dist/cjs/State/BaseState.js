@@ -53,9 +53,11 @@ var BaseState = /** @class */ (function () {
                 var updates = {};
                 while (_this.deferredDispatches.length > 0) {
                     var data = _this.deferredDispatches.shift();
+                    console.log(data);
                     updates = __assign(__assign({}, updates), data);
                 }
                 payload = __assign(__assign({}, updates), payload);
+                console.log("deferredPayload: ", payload, updates);
             }
             _this.dispatch({
                 type: ActionType_1.ActionType.Bound,

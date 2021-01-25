@@ -38,6 +38,7 @@ export abstract class BaseState {
 			let updates: any = {};
 			while (this.deferredDispatches.length > 0) {
 				const data = this.deferredDispatches.shift();
+				console.log(data);
 				updates = {
 					...updates,
 					...data,
@@ -48,6 +49,7 @@ export abstract class BaseState {
 				...updates,
 				...payload,
 			};
+			console.log("deferredPayload: ", payload, updates);
 		}
 
 		this.dispatch({
