@@ -5,6 +5,7 @@ import { ActionType, ActionEvent } from "./ActionType";
 
 export abstract class BaseState {
 	private dispatch: Optional<React.Dispatch<ActionEvent>> = null;
+	private deferredDispatches: any[] = [];
 
 	protected setDispatcher = (dispatcher: Optional<React.Dispatch<ActionEvent>>) => {
 		this.dispatch = dispatcher;
@@ -15,7 +16,6 @@ export abstract class BaseState {
 		if (isServer) return;
 
 		if (this.dispatch === null) {
-			console.error("reset call failed: no dispatcher", this);
 			return;
 		}
 
@@ -30,8 +30,16 @@ export abstract class BaseState {
 
 		if (this.dispatch === null) {
 			// typically just errors during a react rebuild
-			console.error("dispatch call failed: no dispatcher", payload);
+			this.deferredDispatches.push(payload);
 			return;
+		}
+
+		while (this.deferredDispatches.length > 0) {
+			const data = this.deferredDispatches.shift();
+			this.dispatch({
+				type: ActionType.Bound,
+				payload: data,
+			});
 		}
 
 		this.dispatch({
