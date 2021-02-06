@@ -27,7 +27,7 @@ export type RoutePropsRedirect = {
 
 export type RouteProps = RoutePropsNormal | RoutePropsRedirect;
 
-type RouterOptions = {
+export type RouterOptions = {
 	baseName?: string;
 };
 

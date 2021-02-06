@@ -33,9 +33,10 @@ Object.defineProperty(exports, "useNavigate", { enumerable: true, get: function 
 Object.defineProperty(exports, "useLocation", { enumerable: true, get: function () { return react_router_dom_1.useLocation; } });
 Object.defineProperty(exports, "useParams", { enumerable: true, get: function () { return react_router_dom_1.useParams; } });
 Object.defineProperty(exports, "useMatch", { enumerable: true, get: function () { return react_router_dom_1.useMatch; } });
-var makeRoutes = function (inRoutes, HomeComponent, NotFoundComponent) {
+var makeRoutes = function (inRoutes, HomeComponent, NotFoundComponent, routerOptions) {
     if (HomeComponent === void 0) { HomeComponent = null; }
     if (NotFoundComponent === void 0) { NotFoundComponent = null; }
+    if (routerOptions === void 0) { routerOptions = {}; }
     if (!!HomeComponent) {
         inRoutes.push({
             path: "/",
@@ -66,7 +67,8 @@ var makeRoutes = function (inRoutes, HomeComponent, NotFoundComponent) {
         return element;
     });
     return react_1.default.memo(function () { return (react_1.default.createElement(react_router_dom_1.BrowserRouter, null,
-        react_1.default.createElement(Routes, null))); });
+        react_1.default.createElement(react_router_dom_1.Routes, { basename: routerOptions.baseName },
+            react_1.default.createElement(Routes, null)))); });
 };
 exports.makeRoutes = makeRoutes;
 //# sourceMappingURL=MakeRoutes.js.map
