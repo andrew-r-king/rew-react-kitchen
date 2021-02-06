@@ -1,14 +1,5 @@
 import React from "react";
-import {
-	BrowserRouter,
-	Routes as RouterRoutes,
-	Navigate,
-	useNavigate,
-	useLocation,
-	useParams,
-	useMatch,
-	useRoutes,
-} from "react-router-dom";
+import { BrowserRouter, Navigate, useNavigate, useLocation, useParams, useMatch, useRoutes } from "react-router-dom";
 import { Optional } from "Types";
 
 type ComponentType = React.ComponentType<any>;

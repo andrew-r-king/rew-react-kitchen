@@ -63,12 +63,11 @@ var makeRoutes = function (inRoutes, HomeComponent, NotFoundComponent, routerOpt
         return route;
     });
     var Routes = react_1.default.memo(function () {
-        var element = react_router_dom_1.useRoutes(outRoutes);
+        var element = react_router_dom_1.useRoutes(outRoutes, routerOptions.baseName);
         return element;
     });
     return react_1.default.memo(function () { return (react_1.default.createElement(react_router_dom_1.BrowserRouter, null,
-        react_1.default.createElement(react_router_dom_1.Routes, { basename: routerOptions.baseName },
-            react_1.default.createElement(Routes, null)))); });
+        react_1.default.createElement(Routes, null))); });
 };
 exports.makeRoutes = makeRoutes;
 //# sourceMappingURL=MakeRoutes.js.map

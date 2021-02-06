@@ -21,7 +21,7 @@ var __rest = (this && this.__rest) || function (s, e) {
     return t;
 };
 import React from "react";
-import { BrowserRouter, Routes as RouterRoutes, Navigate, useNavigate, useLocation, useParams, useMatch, useRoutes, } from "react-router-dom";
+import { BrowserRouter, Navigate, useNavigate, useLocation, useParams, useMatch, useRoutes } from "react-router-dom";
 var makeRoutes = function (inRoutes, HomeComponent, NotFoundComponent, routerOptions) {
     if (HomeComponent === void 0) { HomeComponent = null; }
     if (NotFoundComponent === void 0) { NotFoundComponent = null; }
@@ -52,12 +52,11 @@ var makeRoutes = function (inRoutes, HomeComponent, NotFoundComponent, routerOpt
         return route;
     });
     var Routes = React.memo(function () {
-        var element = useRoutes(outRoutes);
+        var element = useRoutes(outRoutes, routerOptions.baseName);
         return element;
     });
     return React.memo(function () { return (React.createElement(BrowserRouter, null,
-        React.createElement(RouterRoutes, { basename: routerOptions.baseName },
-            React.createElement(Routes, null)))); });
+        React.createElement(Routes, null))); });
 };
 export { makeRoutes, Navigate, useNavigate, useLocation, useParams, useMatch };
 //# sourceMappingURL=MakeRoutes.js.map
