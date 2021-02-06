@@ -1,5 +1,15 @@
 import React from "react";
-import { BrowserRouter, Navigate, useNavigate, useLocation, useParams, useMatch, useRoutes } from "react-router-dom";
+import {
+	BrowserRouter,
+	Routes as RouterRoutes,
+	Navigate,
+	useNavigate,
+	useLocation,
+	useParams,
+	useMatch,
+	useRoutes,
+} from "react-router-dom";
+import { Optional } from "Types";
 
 type ComponentType = React.ComponentType<any>;
 
@@ -17,10 +27,15 @@ export type RoutePropsRedirect = {
 
 export type RouteProps = RoutePropsNormal | RoutePropsRedirect;
 
+type RouterOptions = {
+	baseName?: string;
+};
+
 const makeRoutes = (
 	inRoutes: RouteProps[],
-	HomeComponent: ComponentType | null = null,
-	NotFoundComponent: ComponentType | null = null
+	HomeComponent: Optional<ComponentType> = null,
+	NotFoundComponent: Optional<ComponentType> = null,
+	routerOptions: RouterOptions = {}
 ) => {
 	if (!!HomeComponent) {
 		inRoutes.push({
@@ -60,7 +75,9 @@ const makeRoutes = (
 
 	return React.memo(() => (
 		<BrowserRouter>
-			<Routes />
+			<RouterRoutes basename={routerOptions.baseName}>
+				<Routes />
+			</RouterRoutes>
 		</BrowserRouter>
 	));
 };
