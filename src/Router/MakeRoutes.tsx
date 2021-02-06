@@ -69,15 +69,13 @@ const makeRoutes = (
 	);
 
 	const Routes = React.memo(() => {
-		const element = useRoutes(outRoutes);
+		const element = useRoutes(outRoutes, routerOptions.baseName);
 		return element;
 	});
 
 	return React.memo(() => (
 		<BrowserRouter>
-			<RouterRoutes basename={routerOptions.baseName}>
-				<Routes />
-			</RouterRoutes>
+			<Routes />
 		</BrowserRouter>
 	));
 };
