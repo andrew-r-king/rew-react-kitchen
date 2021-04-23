@@ -12,8 +12,10 @@ export declare abstract class BaseApi {
     private baseUrl;
     private axios;
     private contentType;
+    private config;
     constructor(baseUrl: string, config?: AxiosRequestConfig);
     private getRequestConfig;
+    protected setConfig: (config: AxiosRequestConfig) => void;
     protected OPTIONS: <T extends object>(route: string) => Promise<ApiResponseWithBody<T>>;
     protected GET: <T extends object>(route: string) => Promise<T>;
     protected HEAD: <Headers_1 extends object>(route: string) => Promise<Headers_1>;

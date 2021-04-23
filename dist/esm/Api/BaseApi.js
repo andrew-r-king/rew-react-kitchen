@@ -1,3 +1,14 @@
+var __assign = (this && this.__assign) || function () {
+    __assign = Object.assign || function(t) {
+        for (var s, i = 1, n = arguments.length; i < n; i++) {
+            s = arguments[i];
+            for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
+                t[p] = s[p];
+        }
+        return t;
+    };
+    return __assign.apply(this, arguments);
+};
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -52,16 +63,15 @@ var BaseApi = /** @class */ (function () {
         var _this = this;
         this.baseUrl = baseUrl;
         this.contentType = "application/json";
+        this.config = {};
         this.getRequestConfig = function (source) {
+            var _a;
             // TODO: Potential for header customization
             // TODO: Also, general authentication
-            return {
-                headers: {
-                    "Access-Control-Allow-Origin": "*",
-                    "Content-Type": _this.contentType,
-                },
-                cancelToken: source.token,
-            };
+            return __assign({ headers: __assign({ "Access-Control-Allow-Origin": "*", "Access-Control-Allow-Methods": "*", "Content-Type": _this.contentType }, (_a = _this.config) === null || _a === void 0 ? void 0 : _a.headers), cancelToken: source.token }, _this.config);
+        };
+        this.setConfig = function (config) {
+            _this.config = config;
         };
         this.OPTIONS = function (route) { return __awaiter(_this, void 0, void 0, function () {
             var source, requestConfig, result, err_1;
