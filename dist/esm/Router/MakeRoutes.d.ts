@@ -1,5 +1,6 @@
 import React from "react";
 import { Navigate, useNavigate, useLocation, useParams, useMatch } from "react-router-dom";
+import { Optional } from "Types";
 declare type ComponentType = React.ComponentType<any>;
 export declare type RoutePropsNormal = {
     caseSensitive?: boolean;
@@ -12,5 +13,8 @@ export declare type RoutePropsRedirect = {
     path?: string;
 };
 export declare type RouteProps = RoutePropsNormal | RoutePropsRedirect;
-declare const makeRoutes: (inRoutes: RouteProps[], HomeComponent?: ComponentType | null, NotFoundComponent?: ComponentType | null) => React.MemoExoticComponent<() => JSX.Element>;
+export declare type RouterOptions = {
+    baseName?: string;
+};
+declare const makeRoutes: (inRoutes: RouteProps[], HomeComponent?: Optional<ComponentType>, NotFoundComponent?: Optional<ComponentType>, routerOptions?: RouterOptions) => React.MemoExoticComponent<() => JSX.Element>;
 export { makeRoutes, Navigate, useNavigate, useLocation, useParams, useMatch };

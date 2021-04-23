@@ -22,9 +22,10 @@ var __rest = (this && this.__rest) || function (s, e) {
 };
 import React from "react";
 import { BrowserRouter, Navigate, useNavigate, useLocation, useParams, useMatch, useRoutes } from "react-router-dom";
-var makeRoutes = function (inRoutes, HomeComponent, NotFoundComponent) {
+var makeRoutes = function (inRoutes, HomeComponent, NotFoundComponent, routerOptions) {
     if (HomeComponent === void 0) { HomeComponent = null; }
     if (NotFoundComponent === void 0) { NotFoundComponent = null; }
+    if (routerOptions === void 0) { routerOptions = {}; }
     if (!!HomeComponent) {
         inRoutes.push({
             path: "/",
@@ -51,7 +52,7 @@ var makeRoutes = function (inRoutes, HomeComponent, NotFoundComponent) {
         return route;
     });
     var Routes = React.memo(function () {
-        var element = useRoutes(outRoutes);
+        var element = useRoutes(outRoutes, routerOptions.baseName);
         return element;
     });
     return React.memo(function () { return (React.createElement(BrowserRouter, null,
