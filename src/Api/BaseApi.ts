@@ -26,6 +26,7 @@ type ApiResponseWithBody<T> = ApiResponse & {
 export abstract class BaseApi {
 	private axios: AxiosInstance;
 	private contentType = "application/json";
+	private config: AxiosRequestConfig = {};
 
 	constructor(private baseUrl: string, config?: AxiosRequestConfig) {
 		if (config) {
@@ -41,10 +42,17 @@ export abstract class BaseApi {
 		return {
 			headers: {
 				"Access-Control-Allow-Origin": "*",
+				"Access-Control-Allow-Methods": "*",
 				"Content-Type": this.contentType,
+				...this.config?.headers,
 			},
 			cancelToken: source.token,
+			...this.config,
 		};
+	};
+
+	protected setConfig = (config: AxiosRequestConfig): void => {
+		this.config = config;
 	};
 
 	protected OPTIONS = async <T extends object>(route: string): Promise<ApiResponseWithBody<T>> => {
