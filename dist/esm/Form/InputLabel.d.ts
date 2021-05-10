@@ -1,3 +1,4 @@
+/// <reference types="react" />
 declare type Props = {
     label: string;
     for?: string;
