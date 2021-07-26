@@ -1,4 +1,3 @@
-/// <reference types="react" />
 import { LinkProps } from "react-router-dom";
 declare type Props = LinkProps & {
     label?: string;

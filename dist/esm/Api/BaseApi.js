@@ -51,7 +51,7 @@ var logError = function (err, source) {
         source.cancel("Request canceled");
     }
     else {
-        console.error(err);
+        // console.error(err);
     }
 };
 var validateForwardSlash = function (route) {
