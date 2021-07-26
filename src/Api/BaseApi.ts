@@ -4,7 +4,7 @@ const logError = (err: any, source: CancelTokenSource) => {
 	if (axios.isCancel(err)) {
 		source.cancel("Request canceled");
 	} else {
-		console.error(err);
+		// console.error(err);
 	}
 };
 
