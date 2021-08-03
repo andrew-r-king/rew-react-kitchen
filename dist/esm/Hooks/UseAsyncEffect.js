@@ -32,7 +32,7 @@ function useAsyncEffect(asyncFunc, deps) {
     var _b = useState(null), error = _b[0], setError = _b[1];
     var _c = useState(-1), lastHash = _c[0], setLastHash = _c[1];
     // eslint-disable-next-line
-    var memoizedFunction = useMemo(function () { return asyncFunc; }, []);
+    var memoizedFunction = useMemo(function () { return asyncFunc; }, deps);
     var hash = useMemo(function () {
         var toHash = memoizedFunction.toString() + deps.toString();
         var ret = hashString(toHash);

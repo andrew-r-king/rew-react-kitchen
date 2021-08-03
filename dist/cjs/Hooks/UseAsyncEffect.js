@@ -35,7 +35,7 @@ function useAsyncEffect(asyncFunc, deps) {
     var _b = react_1.useState(null), error = _b[0], setError = _b[1];
     var _c = react_1.useState(-1), lastHash = _c[0], setLastHash = _c[1];
     // eslint-disable-next-line
-    var memoizedFunction = react_1.useMemo(function () { return asyncFunc; }, []);
+    var memoizedFunction = react_1.useMemo(function () { return asyncFunc; }, deps);
     var hash = react_1.useMemo(function () {
         var toHash = memoizedFunction.toString() + deps.toString();
         var ret = Utils_1.hashString(toHash);
