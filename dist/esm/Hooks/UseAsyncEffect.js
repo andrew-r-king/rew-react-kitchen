@@ -45,6 +45,7 @@ function useAsyncEffect(asyncFunc, deps) {
         return function () {
             if (!!cache[lastHash])
                 delete cache[lastHash];
+            setResult(null);
         };
     }, [lastHash]);
     useEffect(function () {
@@ -52,7 +53,7 @@ function useAsyncEffect(asyncFunc, deps) {
         if (hash !== lastHash) {
             removeCacheEntry();
         }
-        if (!!cache[hash]) {
+        if (!!cache[lastHash] && !!result) {
             setLoading(false);
             setError(null);
         }
@@ -69,6 +70,7 @@ function useAsyncEffect(asyncFunc, deps) {
                 .catch(function (err) {
                 if (cancelRequest)
                     return;
+                setResult(null);
                 setLoading(false);
                 if (err.message) {
                     setError(err.message);
