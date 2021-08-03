@@ -51,7 +51,6 @@ function useAsyncEffect<T>(asyncFunc: (...args: any[]) => Promise<T>, deps: Depe
 	const removeCacheEntry: () => void = useMemo(() => {
 		return () => {
 			if (!!cache[lastHash]) delete cache[lastHash];
-			setResult(null);
 		};
 	}, [lastHash]);
 
@@ -91,7 +90,7 @@ function useAsyncEffect<T>(asyncFunc: (...args: any[]) => Promise<T>, deps: Depe
 		return () => {
 			cancelRequest = true;
 		};
-	}, [asyncFunc, hash, lastHash, memoizedFunction, removeCacheEntry]);
+	}, [hash, lastHash, memoizedFunction, removeCacheEntry]);
 
 	return [result, loading, error, { id: hash, remove: removeCacheEntry }];
 }
