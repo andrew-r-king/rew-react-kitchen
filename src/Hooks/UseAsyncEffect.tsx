@@ -38,7 +38,7 @@ function useAsyncEffect<T>(asyncFunc: (...args: any[]) => Promise<T>, deps: Depe
 	const [lastHash, setLastHash] = useState<number>(-1);
 
 	// eslint-disable-next-line
-	const memoizedFunction = useMemo(() => asyncFunc, [asyncFunc, ...deps]);
+	const memoizedFunction = useMemo(() => asyncFunc, deps);
 
 	const hash = useMemo<number>(() => {
 		const toHash = memoizedFunction.toString() + deps.toString();
