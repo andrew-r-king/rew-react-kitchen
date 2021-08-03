@@ -31,11 +31,12 @@ var clearAllEntries = function () {
     cache = {};
 };
 function useAsyncEffect(asyncFunc, deps) {
-    var _a = react_1.useState(true), loading = _a[0], setLoading = _a[1];
-    var _b = react_1.useState(null), error = _b[0], setError = _b[1];
-    var _c = react_1.useState(-1), lastHash = _c[0], setLastHash = _c[1];
+    var _a = react_1.useState(null), result = _a[0], setResult = _a[1];
+    var _b = react_1.useState(true), loading = _b[0], setLoading = _b[1];
+    var _c = react_1.useState(null), error = _c[0], setError = _c[1];
+    var _d = react_1.useState(-1), lastHash = _d[0], setLastHash = _d[1];
     // eslint-disable-next-line
-    var memoizedFunction = react_1.useMemo(function () { return asyncFunc; }, deps);
+    var memoizedFunction = react_1.useMemo(function () { return asyncFunc; }, __spreadArrays([asyncFunc], deps));
     var hash = react_1.useMemo(function () {
         var toHash = memoizedFunction.toString() + deps.toString();
         var ret = Utils_1.hashString(toHash);
@@ -60,10 +61,11 @@ function useAsyncEffect(asyncFunc, deps) {
         }
         else {
             memoizedFunction()
-                .then(function (result) {
+                .then(function (res) {
                 if (cancelRequest)
                     return;
-                cache[hash] = result;
+                cache[hash] = res;
+                setResult(res);
                 setLoading(false);
                 setError(null);
             })
@@ -83,7 +85,7 @@ function useAsyncEffect(asyncFunc, deps) {
             cancelRequest = true;
         };
     }, [asyncFunc, hash, lastHash, memoizedFunction, removeCacheEntry]);
-    return [cache[hash], loading, error, { id: hash, remove: removeCacheEntry }];
+    return [result, loading, error, { id: hash, remove: removeCacheEntry }];
 }
 exports.useAsyncEffect = useAsyncEffect;
 var asyncEffectCache = {

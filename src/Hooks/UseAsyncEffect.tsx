@@ -32,12 +32,13 @@ const clearAllEntries = () => {
 };
 
 function useAsyncEffect<T>(asyncFunc: (...args: any[]) => Promise<T>, deps: DependencyList): ReturnType<T> {
+	const [result, setResult] = useState<Optional<T>>(null);
 	const [loading, setLoading] = useState<boolean>(true);
 	const [error, setError] = useState<Optional<string>>(null);
 	const [lastHash, setLastHash] = useState<number>(-1);
 
 	// eslint-disable-next-line
-	const memoizedFunction = useMemo(() => asyncFunc, deps);
+	const memoizedFunction = useMemo(() => asyncFunc, [asyncFunc, ...deps]);
 
 	const hash = useMemo<number>(() => {
 		const toHash = memoizedFunction.toString() + deps.toString();
@@ -64,10 +65,11 @@ function useAsyncEffect<T>(asyncFunc: (...args: any[]) => Promise<T>, deps: Depe
 			setError(null);
 		} else {
 			memoizedFunction()
-				.then((result: T) => {
+				.then((res: T) => {
 					if (cancelRequest) return;
 
-					cache[hash] = result;
+					cache[hash] = res;
+					setResult(res);
 					setLoading(false);
 					setError(null);
 				})
@@ -89,7 +91,7 @@ function useAsyncEffect<T>(asyncFunc: (...args: any[]) => Promise<T>, deps: Depe
 		};
 	}, [asyncFunc, hash, lastHash, memoizedFunction, removeCacheEntry]);
 
-	return [cache[hash], loading, error, { id: hash, remove: removeCacheEntry }];
+	return [result, loading, error, { id: hash, remove: removeCacheEntry }];
 }
 
 const asyncEffectCache = {
