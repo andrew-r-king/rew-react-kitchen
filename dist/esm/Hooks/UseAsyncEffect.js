@@ -43,7 +43,6 @@ function useAsyncEffect(asyncFunc, deps) {
         return function () {
             if (!!cache[lastHash])
                 delete cache[lastHash];
-            setResult(null);
         };
     }, [lastHash]);
     useEffect(function () {
@@ -81,7 +80,7 @@ function useAsyncEffect(asyncFunc, deps) {
         return function () {
             cancelRequest = true;
         };
-    }, [asyncFunc, hash, lastHash, memoizedFunction, removeCacheEntry]);
+    }, [hash, lastHash, memoizedFunction, removeCacheEntry]);
     return [result, loading, error, { id: hash, remove: removeCacheEntry }];
 }
 var asyncEffectCache = {
