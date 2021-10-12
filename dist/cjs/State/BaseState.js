@@ -1,3 +1,4 @@
+"use strict";
 var __assign = (this && this.__assign) || function () {
     __assign = Object.assign || function(t) {
         for (var s, i = 1, n = arguments.length; i < n; i++) {
@@ -16,8 +17,10 @@ var __spreadArrays = (this && this.__spreadArrays) || function () {
             r[k] = a[j];
     return r;
 };
-import "reflect-metadata";
-import { ActionType } from "./ActionType";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.Action = exports.BaseState = void 0;
+require("reflect-metadata");
+var ActionType_1 = require("./ActionType");
 var BaseState = /** @class */ (function () {
     function BaseState() {
         var _this = this;
@@ -37,7 +40,7 @@ var BaseState = /** @class */ (function () {
                 return;
             }
             _this.dispatch({
-                type: ActionType.Reset,
+                type: ActionType_1.ActionType.Reset,
             });
         };
         this.dispatchDeferredState = function () {
@@ -61,7 +64,7 @@ var BaseState = /** @class */ (function () {
                     updates = __assign(__assign({}, updates), data);
                 }
                 _this.dispatch({
-                    type: ActionType.Bound,
+                    type: ActionType_1.ActionType.Bound,
                     payload: updates,
                 });
             }
@@ -81,7 +84,7 @@ var BaseState = /** @class */ (function () {
                 return;
             }
             _this.dispatch({
-                type: ActionType.Bound,
+                type: ActionType_1.ActionType.Bound,
                 payload: payload,
             });
         };
@@ -89,8 +92,8 @@ var BaseState = /** @class */ (function () {
     }
     return BaseState;
 }());
-export { BaseState };
-export function Action(target, key, descriptor) {
+exports.BaseState = BaseState;
+function Action(target, key, descriptor) {
     if (!descriptor) {
         throw new Error("@Action: descriptor was not found");
     }
@@ -171,4 +174,5 @@ export function Action(target, key, descriptor) {
         };
     }
 }
+exports.Action = Action;
 //# sourceMappingURL=BaseState.js.map
