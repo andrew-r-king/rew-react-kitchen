@@ -1,4 +1,4 @@
-import axios, { AxiosInstance, AxiosRequestConfig, CancelTokenSource } from "axios";
+import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponseHeaders, CancelTokenSource } from "axios";
 
 const logError = (err: any, source: CancelTokenSource) => {
 	if (axios.isCancel(err)) {
@@ -83,7 +83,7 @@ export abstract class BaseApi {
 		}
 	};
 
-	protected HEAD = async <Headers extends object>(route: string): Promise<Headers> => {
+	protected HEAD = async (route: string): Promise<AxiosResponseHeaders> => {
 		const source = axios.CancelToken.source();
 		try {
 			validateForwardSlash(route);

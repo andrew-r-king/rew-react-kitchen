@@ -30,7 +30,7 @@ var react_1 = __importDefault(require("react"));
 var react_router_dom_1 = require("react-router-dom");
 var NavLink = function (_a) {
     var children = _a.children, label = _a.label, exact = _a.exact, activeClassName = _a.activeClassName, props = __rest(_a, ["children", "label", "exact", "activeClassName"]);
-    return (react_1.default.createElement(react_router_dom_1.NavLink, __assign({}, props, { end: !!exact, activeClassName: activeClassName !== null && activeClassName !== void 0 ? activeClassName : "is-active" }), label !== null && label !== void 0 ? label : children));
+    return (react_1.default.createElement(react_router_dom_1.NavLink, __assign({}, props, { end: !!exact, className: function (data) { return (!!data.isActive && !!activeClassName ? "is-active" : ""); } }), label !== null && label !== void 0 ? label : children));
 };
 exports.NavLink = NavLink;
 //# sourceMappingURL=NavLink.js.map

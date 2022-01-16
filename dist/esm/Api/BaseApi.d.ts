@@ -1,4 +1,4 @@
-import { AxiosRequestConfig } from "axios";
+import { AxiosRequestConfig, AxiosResponseHeaders } from "axios";
 declare type ApiResponse = {
     headers: any;
     request?: any;
@@ -18,7 +18,7 @@ export declare abstract class BaseApi {
     protected setConfig: (config: AxiosRequestConfig) => void;
     protected OPTIONS: <T extends object>(route: string) => Promise<ApiResponseWithBody<T>>;
     protected GET: <T extends object>(route: string) => Promise<T>;
-    protected HEAD: <Headers_1 extends object>(route: string) => Promise<Headers_1>;
+    protected HEAD: (route: string) => Promise<AxiosResponseHeaders>;
     protected POST: <T extends object, Data extends object>(route: string, data: Data) => Promise<T>;
     protected PUT: <Data extends object>(route: string, data: Data) => Promise<ApiResponse>;
     protected PATCH: <T extends object, Data extends object>(route: string, data: Data) => Promise<T>;
