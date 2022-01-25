@@ -33,9 +33,9 @@ function makeInput(type, defaultPlaceholder, mutator) {
     if (defaultPlaceholder === void 0) { defaultPlaceholder = ""; }
     return function (props) {
         var label = props.label, descriptor = props.descriptor, required = props.required, rightLabel = props.rightLabel, error = props.error, placeholder = props.placeholder, inputProps = __rest(props, ["label", "descriptor", "required", "rightLabel", "error", "placeholder"]);
-        var _a = formik_1.useField(props.name), field = _a[0], meta = _a[1], helpers = _a[2];
+        var _a = (0, formik_1.useField)(props.name), field = _a[0], meta = _a[1], helpers = _a[2];
         var touched = meta.touched && (meta.value === "" || meta.value === 0);
-        var className = "input-field " + type + " " + (touched ? "touched " : "");
+        var className = "input-field ".concat(type, " ").concat(touched ? "touched " : "");
         return (react_1.default.createElement("div", { className: className },
             descriptor && react_1.default.createElement("p", null, descriptor),
             label && !rightLabel && react_1.default.createElement(InputLabel_1.InputLabel, { label: label, for: field.name, required: required }),

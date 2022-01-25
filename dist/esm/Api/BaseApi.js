@@ -56,7 +56,7 @@ var logError = function (err, source) {
 };
 var validateForwardSlash = function (route) {
     if (!route.startsWith("/"))
-        throw new Error("Route '" + route + "' must start with '/'");
+        throw new Error("Route '".concat(route, "' must start with '/'"));
 };
 var BaseApi = /** @class */ (function () {
     function BaseApi(baseUrl, config) {
@@ -182,7 +182,7 @@ var BaseApi = /** @class */ (function () {
                         created = result.status === 201;
                         modified = result.status === 200 || result.status === 204;
                         if (!created && !modified) {
-                            throw new Error("Invalid or unexpected response status from PUT '" + route + "': received " + result.status + " (" + result.statusText + ")");
+                            throw new Error("Invalid or unexpected response status from PUT '".concat(route, "': received ").concat(result.status, " (").concat(result.statusText, ")"));
                         }
                         return [2 /*return*/, result];
                     case 3:
@@ -209,7 +209,7 @@ var BaseApi = /** @class */ (function () {
                         result = _a.sent();
                         validStatusCode = result.status >= 200 && result.status < 300;
                         if (!validStatusCode) {
-                            throw new Error("Invalid or unexpected response status from PATCH '" + route + "': received " + result.status + " (" + result.statusText + ")");
+                            throw new Error("Invalid or unexpected response status from PATCH '".concat(route, "': received ").concat(result.status, " (").concat(result.statusText, ")"));
                         }
                         return [2 /*return*/, result.data];
                     case 3:
@@ -237,7 +237,7 @@ var BaseApi = /** @class */ (function () {
                         noContent = result.status === 204;
                         validStatusCode = result.status === 200 || result.status === 202;
                         if (!noContent && !validStatusCode) {
-                            throw new Error("Invalid or unexpected response status from DELETE '" + route + "': received " + result.status + " (" + result.statusText + ")");
+                            throw new Error("Invalid or unexpected response status from DELETE '".concat(route, "': received ").concat(result.status, " (").concat(result.statusText, ")"));
                         }
                         return [2 /*return*/, !noContent && validStatusCode];
                     case 3:

@@ -9,10 +9,14 @@ var __assign = (this && this.__assign) || function () {
     };
     return __assign.apply(this, arguments);
 };
-var __spreadArray = (this && this.__spreadArray) || function (to, from) {
-    for (var i = 0, il = from.length, j = to.length; i < il; i++, j++)
-        to[j] = from[i];
-    return to;
+var __spreadArray = (this && this.__spreadArray) || function (to, from, pack) {
+    if (pack || arguments.length === 2) for (var i = 0, l = from.length, ar; i < l; i++) {
+        if (ar || !(i in from)) {
+            if (!ar) ar = Array.prototype.slice.call(from, 0, i);
+            ar[i] = from[i];
+        }
+    }
+    return to.concat(ar || Array.prototype.slice.call(from));
 };
 import "reflect-metadata";
 import { ActionType } from "./ActionType";
@@ -98,7 +102,7 @@ export function Action(target, key, descriptor) {
     var initializer = descriptor === null || descriptor === void 0 ? void 0 : descriptor.initializer;
     if (initializer) {
         if (typeof initializer !== "function") {
-            throw new TypeError("@Action decorator can only be applied to arrow functions, not " + typeof initializer);
+            throw new TypeError("@Action decorator can only be applied to arrow functions, not ".concat(typeof initializer));
         }
         return {
             enumerable: true,
@@ -129,7 +133,7 @@ export function Action(target, key, descriptor) {
     else {
         var value = target[key];
         if (value && typeof value !== "function") {
-            throw new TypeError("@Action decorator can only be applied to arrow functions, not " + typeof value);
+            throw new TypeError("@Action decorator can only be applied to arrow functions, not ".concat(typeof value));
         }
         var func_1;
         var patchedFunc_1;
@@ -140,7 +144,7 @@ export function Action(target, key, descriptor) {
             enumerable: false,
             configurable: true,
             set: function (method) {
-                console.log(key + ": " + method);
+                console.log("".concat(key, ": ").concat(method));
                 patchedFunc_1 = undefined;
                 func_1 = method;
             },
@@ -156,7 +160,7 @@ export function Action(target, key, descriptor) {
                             console.log("@Action: no initializer");
                             return;
                         }
-                        var result = func_1.call.apply(func_1, __spreadArray([_this], args));
+                        var result = func_1.call.apply(func_1, __spreadArray([_this], args, false));
                         if (result && typeof result.finally === "function") {
                             return result.finally(function () { return _this.dispatchStateInternal(_this); });
                         }

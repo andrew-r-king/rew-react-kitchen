@@ -40,8 +40,8 @@ function setFormLocale(locale) {
 }
 exports.setFormLocale = setFormLocale;
 function useFormikForm(InnerForm, initialValues, dependencies) {
-    var WrappedForm = react_1.useMemo(function () {
-        return formik_1.withFormik({
+    var WrappedForm = (0, react_1.useMemo)(function () {
+        return (0, formik_1.withFormik)({
             mapPropsToValues: function (_props) { return initialValues; },
             validationSchema: function (props) {
                 if (props.validationSchema)

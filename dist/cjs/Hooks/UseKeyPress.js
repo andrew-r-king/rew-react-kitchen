@@ -3,7 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.useKeyDown = exports.useKeyUp = void 0;
 var react_1 = require("react");
 var useKeyUp = function (handler) {
-    react_1.useEffect(function () {
+    (0, react_1.useEffect)(function () {
         document.addEventListener("keyup", handler);
         return function () {
             document.removeEventListener("keyup", handler);
@@ -12,7 +12,7 @@ var useKeyUp = function (handler) {
 };
 exports.useKeyUp = useKeyUp;
 var useKeyDown = function (handler) {
-    react_1.useEffect(function () {
+    (0, react_1.useEffect)(function () {
         document.addEventListener("keydown", handler);
         return function () {
             document.removeEventListener("keydown", handler);

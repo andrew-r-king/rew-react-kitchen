@@ -1,7 +1,11 @@
-var __spreadArray = (this && this.__spreadArray) || function (to, from) {
-    for (var i = 0, il = from.length, j = to.length; i < il; i++, j++)
-        to[j] = from[i];
-    return to;
+var __spreadArray = (this && this.__spreadArray) || function (to, from, pack) {
+    if (pack || arguments.length === 2) for (var i = 0, l = from.length, ar; i < l; i++) {
+        if (ar || !(i in from)) {
+            if (!ar) ar = Array.prototype.slice.call(from, 0, i);
+            ar[i] = from[i];
+        }
+    }
+    return to.concat(ar || Array.prototype.slice.call(from));
 };
 import { useEffect, useMemo, useState } from "react";
 import { hashString } from "../Utils";
@@ -38,7 +42,7 @@ function useAsyncEffect(asyncFunc, deps) {
         setLastHash(ret);
         return ret;
         // eslint-disable-next-line
-    }, __spreadArray([memoizedFunction], deps));
+    }, __spreadArray([memoizedFunction], deps, true));
     var removeCacheEntry = useMemo(function () {
         return function () {
             if (!!cache[lastHash])

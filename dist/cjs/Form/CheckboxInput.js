@@ -30,9 +30,9 @@ var react_1 = __importDefault(require("react"));
 var formik_1 = require("formik");
 var CheckboxInput = function (_a) {
     var disabled = _a.disabled, label = _a.label, className = _a.className, props = __rest(_a, ["disabled", "label", "className"]);
-    var field = formik_1.useField(props.name)[0];
+    var field = (0, formik_1.useField)(props.name)[0];
     var groupName = props.groupName ? props.groupName + "[]" : field.name;
-    return (react_1.default.createElement("label", { htmlFor: field.name, className: "input-checkbox " + (className || "") },
+    return (react_1.default.createElement("label", { htmlFor: field.name, className: "input-checkbox ".concat(className || "") },
         react_1.default.createElement("input", __assign({}, field, { id: field.name, value: field.name, type: "checkbox", name: groupName, disabled: disabled || false, onChange: function (ev) {
                 return field.onChange(__assign(__assign({}, ev), { target: {
                         name: ev.target.value,

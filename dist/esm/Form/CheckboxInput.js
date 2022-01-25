@@ -26,7 +26,7 @@ var CheckboxInput = function (_a) {
     var disabled = _a.disabled, label = _a.label, className = _a.className, props = __rest(_a, ["disabled", "label", "className"]);
     var field = useField(props.name)[0];
     var groupName = props.groupName ? props.groupName + "[]" : field.name;
-    return (React.createElement("label", { htmlFor: field.name, className: "input-checkbox " + (className || "") },
+    return (React.createElement("label", { htmlFor: field.name, className: "input-checkbox ".concat(className || "") },
         React.createElement("input", __assign({}, field, { id: field.name, value: field.name, type: "checkbox", name: groupName, disabled: disabled || false, onChange: function (ev) {
                 return field.onChange(__assign(__assign({}, ev), { target: {
                         name: ev.target.value,

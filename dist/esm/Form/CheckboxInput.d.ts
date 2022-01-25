@@ -1,3 +1,4 @@
+/// <reference types="react" />
 declare type Props = {
     name: string;
     groupName?: string;

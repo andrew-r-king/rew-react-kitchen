@@ -49,8 +49,8 @@ function createStore(classConstructor) {
         }
     };
     var Provider = function (props) {
-        var _a = react_1.useReducer(reducer, inst), state = _a[0], dispatcher = _a[1];
-        react_1.useEffect(function () {
+        var _a = (0, react_1.useReducer)(reducer, inst), state = _a[0], dispatcher = _a[1];
+        (0, react_1.useEffect)(function () {
             // setDispatcher is private, so inst is cast to any to get around it
             inst.setDispatcher(dispatcher);
             return function () {
@@ -60,7 +60,7 @@ function createStore(classConstructor) {
         }, []);
         return react_1.default.createElement(InternalContext.Provider, { value: state }, props.children);
     };
-    var Context = function () { return react_1.useContext(InternalContext); };
+    var Context = function () { return (0, react_1.useContext)(InternalContext); };
     return [Provider, Context, inst];
 }
 exports.createStore = createStore;

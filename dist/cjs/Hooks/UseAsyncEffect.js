@@ -1,8 +1,12 @@
 "use strict";
-var __spreadArray = (this && this.__spreadArray) || function (to, from) {
-    for (var i = 0, il = from.length, j = to.length; i < il; i++, j++)
-        to[j] = from[i];
-    return to;
+var __spreadArray = (this && this.__spreadArray) || function (to, from, pack) {
+    if (pack || arguments.length === 2) for (var i = 0, l = from.length, ar; i < l; i++) {
+        if (ar || !(i in from)) {
+            if (!ar) ar = Array.prototype.slice.call(from, 0, i);
+            ar[i] = from[i];
+        }
+    }
+    return to.concat(ar || Array.prototype.slice.call(from));
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.asyncEffectCache = exports.useAsyncEffect = void 0;
@@ -29,26 +33,26 @@ var clearAllEntries = function () {
     cache = {};
 };
 function useAsyncEffect(asyncFunc, deps) {
-    var _a = react_1.useState(null), result = _a[0], setResult = _a[1];
-    var _b = react_1.useState(true), loading = _b[0], setLoading = _b[1];
-    var _c = react_1.useState(null), error = _c[0], setError = _c[1];
-    var _d = react_1.useState(-1), lastHash = _d[0], setLastHash = _d[1];
+    var _a = (0, react_1.useState)(null), result = _a[0], setResult = _a[1];
+    var _b = (0, react_1.useState)(true), loading = _b[0], setLoading = _b[1];
+    var _c = (0, react_1.useState)(null), error = _c[0], setError = _c[1];
+    var _d = (0, react_1.useState)(-1), lastHash = _d[0], setLastHash = _d[1];
     // eslint-disable-next-line
-    var memoizedFunction = react_1.useMemo(function () { return asyncFunc; }, deps);
-    var hash = react_1.useMemo(function () {
+    var memoizedFunction = (0, react_1.useMemo)(function () { return asyncFunc; }, deps);
+    var hash = (0, react_1.useMemo)(function () {
         var toHash = memoizedFunction.toString() + deps.toString();
-        var ret = Utils_1.hashString(toHash);
+        var ret = (0, Utils_1.hashString)(toHash);
         setLastHash(ret);
         return ret;
         // eslint-disable-next-line
-    }, __spreadArray([memoizedFunction], deps));
-    var removeCacheEntry = react_1.useMemo(function () {
+    }, __spreadArray([memoizedFunction], deps, true));
+    var removeCacheEntry = (0, react_1.useMemo)(function () {
         return function () {
             if (!!cache[lastHash])
                 delete cache[lastHash];
         };
     }, [lastHash]);
-    react_1.useEffect(function () {
+    (0, react_1.useEffect)(function () {
         var cancelRequest = false;
         if (hash !== lastHash) {
             removeCacheEntry();

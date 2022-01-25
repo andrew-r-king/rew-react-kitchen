@@ -68,7 +68,7 @@ var BrowserInfo = /** @class */ (function () {
     return BrowserInfo;
 }());
 var useBrowserInfo = function () {
-    var browser = react_1.useMemo(function () {
+    var browser = (0, react_1.useMemo)(function () {
         var isServer = typeof window === "undefined";
         if (isServer)
             return;

@@ -29,7 +29,7 @@ function makeInput(type, defaultPlaceholder, mutator) {
         var label = props.label, descriptor = props.descriptor, required = props.required, rightLabel = props.rightLabel, error = props.error, placeholder = props.placeholder, inputProps = __rest(props, ["label", "descriptor", "required", "rightLabel", "error", "placeholder"]);
         var _a = useField(props.name), field = _a[0], meta = _a[1], helpers = _a[2];
         var touched = meta.touched && (meta.value === "" || meta.value === 0);
-        var className = "input-field " + type + " " + (touched ? "touched " : "");
+        var className = "input-field ".concat(type, " ").concat(touched ? "touched " : "");
         return (React.createElement("div", { className: className },
             descriptor && React.createElement("p", null, descriptor),
             label && !rightLabel && React.createElement(InputLabel, { label: label, for: field.name, required: required }),

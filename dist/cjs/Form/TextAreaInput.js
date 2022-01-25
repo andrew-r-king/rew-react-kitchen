@@ -35,7 +35,7 @@ var limitTextAreaInput = function (value, maxLength) {
 };
 var TextAreaInput = function (_a) {
     var name = _a.name, propsMaxLength = _a.maxLength, description = _a.description, showCount = _a.showCount, label = _a.label, required = _a.required, props = __rest(_a, ["name", "maxLength", "description", "showCount", "label", "required"]);
-    var _b = formik_1.useField(name), field = _b[0], meta = _b[1];
+    var _b = (0, formik_1.useField)(name), field = _b[0], meta = _b[1];
     var maxLength = propsMaxLength !== null && propsMaxLength !== void 0 ? propsMaxLength : 9999;
     var value = field.value;
     if (value !== undefined && value.length > maxLength) {
@@ -44,7 +44,7 @@ var TextAreaInput = function (_a) {
     else {
         value = value || "";
     }
-    var className = "input-field textarea " + (meta.touched ? "touched " : "");
+    var className = "input-field textarea ".concat(meta.touched ? "touched " : "");
     return (react_1.default.createElement("div", { className: className },
         description && (react_1.default.createElement("p", null,
             description,

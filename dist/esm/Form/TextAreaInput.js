@@ -38,7 +38,7 @@ var TextAreaInput = function (_a) {
     else {
         value = value || "";
     }
-    var className = "input-field textarea " + (meta.touched ? "touched " : "");
+    var className = "input-field textarea ".concat(meta.touched ? "touched " : "");
     return (React.createElement("div", { className: className },
         description && (React.createElement("p", null,
             description,
