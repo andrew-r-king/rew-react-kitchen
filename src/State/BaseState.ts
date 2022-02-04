@@ -145,7 +145,7 @@ export function Action<T>(target: any, key: string, descriptor?: BabelPropertyDe
 			enumerable: false,
 			configurable: true,
 			set(method: any) {
-				console.log(`${key}: ${method}`);
+				// console.log(`${key}: ${method}`);
 				patchedFunc = undefined;
 				func = method;
 			},

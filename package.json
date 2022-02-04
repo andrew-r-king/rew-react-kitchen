@@ -26,11 +26,9 @@
 	},
 	"dependencies": {
 		"axios": "0.25.0",
-		"formik": "2.2.9",
 		"history": "5.2.0",
 		"react-autosize-textarea": "7.1.0",
-		"react-router-dom": "6.2.1",
-		"yup": "0.32.11"
+		"react-router-dom": "6.2.1"
 	},
 	"devDependencies": {
 		"@types/react": "17.0.38",

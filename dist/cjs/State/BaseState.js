@@ -147,7 +147,7 @@ function Action(target, key, descriptor) {
             enumerable: false,
             configurable: true,
             set: function (method) {
-                console.log("".concat(key, ": ").concat(method));
+                // console.log(`${key}: ${method}`);
                 patchedFunc_1 = undefined;
                 func_1 = method;
             },

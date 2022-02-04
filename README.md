@@ -209,6 +209,3 @@ const Routes = makeRoutes(routes, HomeLayout, NotFoundLayout);
 export { Routes };
 ```
 
----
-
-Form - Form-related components to make them as easy as possible to create (wraps around formik & yup)
