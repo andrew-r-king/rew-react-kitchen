@@ -1,5 +1,5 @@
 {
-	"name": "@andrew-r-king/react-kitchen",
+	"name": "@rewrking/react-kitchen",
 	"version": "0.1.39",
 	"author": "Andrew R. King",
 	"description": "A set of helpful React components designed to give one less headaches",
@@ -14,7 +14,7 @@
 		"registry": "https://npm.pkg.github.com/"
 	},
 	"repository": {
-		"url": "git@github.com:andrew-r-king/rew-react-kitchen.git"
+		"url": "git@github.com:rewrking/rew-react-kitchen.git"
 	},
 	"keywords": [
 		"typescript",

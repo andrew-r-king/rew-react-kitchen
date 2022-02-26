@@ -1,4 +1,4 @@
-## @andrew-r-king/react-kitchen
+## @rewrking/react-kitchen
 
 A place for all of this complex typescript & react-related boilerplate
 
@@ -11,7 +11,7 @@ A place for all of this complex typescript & react-related boilerplate
 **Base/BaseApi** - abstract class for easily interacting with apis (wraps around axios)
 
 ```ts
-import { BaseApi } from "@andrew-r-king/react-kitchen";
+import { BaseApi } from "@rewrking/react-kitchen";
 
 export type DadJoke = {
     setup: string;
@@ -37,7 +37,7 @@ export { dadJokes };
 **Hooks/useAsyncEffect** - a useEffect-style hook that takes in an async function and caches the result by default
 
 ```tsx
-import { useAsyncEffect } from "@andrew-r-king/react-kitchen";
+import { useAsyncEffect } from "@rewrking/react-kitchen";
 import { dadJokes } from "Api/DadJokes";
 
 const JokesLayout = () => {
@@ -68,7 +68,7 @@ const JokesLayout = () => {
 **Hooks/asyncEffectCache** - an object export for interacting with the async effect cache
 
 ```tsx
-import { asyncEffectCache } from "@andrew-r-king/react-kitchen";
+import { asyncEffectCache } from "@rewrking/react-kitchen";
 
 ...
 
@@ -92,7 +92,7 @@ useEffect(() => {
 **State/Action** - A decorator for declaring state actions. Also works with promises
 
 ```ts
-import { BaseState, Action } from "@andrew-r-king/react-kitchen";
+import { BaseState, Action } from "@rewrking/react-kitchen";
 
 class CounterState extends BaseState {
     count: number = 0;
@@ -140,7 +140,7 @@ I was not able to get this working with the Parcel 2 beta (due to their bizarre 
 **State/makeRootStoreProvider** - A function that takes in a number of store providers and returns a nested provider (less ugly than nesting them manually)
 
 ```tsx
-import { createStore, makeRootStoreProvider } from "@andrew-r-king/react-kitchen";
+import { createStore, makeRootStoreProvider } from "@rewrking/react-kitchen";
 
 import { CounterState } from "./CounterState";
 import { JokeState } from "./JokeState";
@@ -189,7 +189,7 @@ counterStore.increase();
 Note: See [v6 migration guide for details](https://github.com/ReactTraining/react-router/blob/f59ee5488bc343cf3c957b7e0cc395ef5eb572d2/docs/advanced-guides/migrating-5-to-6.md)
 
 ```tsx
-import { makeRoutes, RouteProps } from "@andrew-r-king/react-kitchen";
+import { makeRoutes, RouteProps } from "@rewrking/react-kitchen";
 
 import { JokesLayout, HomeLayout, NotFoundLayout, CountersLayout } from "Layouts";
 
