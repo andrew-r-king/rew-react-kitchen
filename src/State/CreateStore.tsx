@@ -1,18 +1,40 @@
 import React, { useReducer, useContext, useEffect, PropsWithChildren } from "react";
 
 import { BaseState } from "./BaseState";
-import { ClassType } from "../Types";
+import { ClassType, Optional } from "../Types";
 import { ActionEvent, ActionType } from "./ActionType";
 
 export type StoreProvider = (props: PropsWithChildren<object>) => JSX.Element;
 
-export function createStore<T extends BaseState>(classConstructor: ClassType<T>): [StoreProvider, () => T, T] {
-	let inst: T = new classConstructor();
-	const InternalContext: React.Context<T> = React.createContext(inst);
+type InternalContext<T extends BaseState> = {
+	inst: T;
+	Context: React.Context<T>;
+};
+
+export function createStore<T extends BaseState>(
+	classConstructor: ClassType<T>,
+	...args: any[]
+): [StoreProvider, () => T, () => T] {
+	let container: Optional<InternalContext<T>> = null;
+
+	const postContainer = (): InternalContext<T> => {
+		if (!container) {
+			const inst = new classConstructor(...args);
+			container = {
+				inst,
+				Context: React.createContext(inst),
+			};
+		}
+		return container;
+	};
 
 	const initialize = (_state: T) => {
-		inst = new classConstructor();
-		return inst;
+		if (!container) {
+			return postContainer().inst;
+		} else {
+			container.inst = new classConstructor(...args);
+		}
+		return container.inst;
 	};
 
 	const reducer = (state: T, action: ActionEvent<T>) => {
@@ -26,22 +48,33 @@ export function createStore<T extends BaseState>(classConstructor: ClassType<T>)
 	};
 
 	const Provider = (props: PropsWithChildren<object>) => {
-		const [state, dispatcher] = useReducer(reducer, inst);
+		const container = React.useMemo(() => postContainer(), []);
+		const [state, dispatcher] = useReducer(reducer, container.inst);
 
 		useEffect(() => {
 			// setDispatcher is private, so inst is cast to any to get around it
-			(inst as any).setDispatcher(dispatcher);
+			(container.inst as any).setDispatcher(dispatcher);
 
 			return () => {
-				(inst as any).setDispatcher(null);
+				(container.inst as any).setDispatcher(null);
+				(container as any) = null;
 			};
 			// eslint-disable-next-line
 		}, []);
 
-		return <InternalContext.Provider value={state}>{props.children}</InternalContext.Provider>;
+		return <container.Context.Provider value={state}>{props.children}</container.Context.Provider>;
 	};
 
-	const Context = () => useContext(InternalContext);
+	// Public Context
+	const Context = () => useContext(postContainer().Context);
 
-	return [Provider, Context, inst];
+	// Public getter
+	const getInstance = (): T => {
+		if (!container) {
+			throw new Error(`Store getter for ${classConstructor.name} called outside of its context.`);
+		}
+		return container.inst;
+	};
+
+	return [Provider, Context, getInstance];
 }

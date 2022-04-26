@@ -147,25 +147,25 @@ import { JokeState } from "./JokeState";
 
 // Return type is [Provider, hook, store instance]
 // With the store instance, you can directly call a state action from another state
-const [CounterProvider, useCounterStore, counterStore] = createStore(CounterState);
-const [JokeStoreProvider, useJokeStore, jokeStore] = createStore(JokeState);
+const [CounterProvider, useCounterStore, getCounterStore] = createStore(CounterState);
+const [JokeStoreProvider, useJokeStore, getJokeStore] = createStore(JokeState);
 
 // Providers would be wrapped around anything that needs these states, or if globally, your root component
 const Providers = makeRootStoreProvider([CounterProvider, JokeStoreProvider]);
 
-export { Providers, useCounterStore, counterStore, useJokeStore, jokeStore };
+export { Providers, useCounterStore, getCounterStore, useJokeStore, getJokeStore };
 ```
 
 Finally, you'd use it similarly to other hooks:
 
 ```tsx
-import { useCounterStore, counterStore } from "Stores";
+import { useCounterStore, getCounterStore } from "Stores";
 
 // inside some component
 const { increase } = useCounterStore();
 
 // or, direct access somewhere
-counterStore.increase();
+getCounterStore().increase();
 ```
 
 ---
