@@ -48,21 +48,23 @@ export function createStore<T extends BaseState>(
 	};
 
 	const Provider = (props: PropsWithChildren<object>) => {
-		const container = React.useMemo(() => postContainer(), []);
-		const [state, dispatcher] = useReducer(reducer, container.inst);
+		const local = React.useMemo(() => postContainer(), []);
+		const [state, dispatcher] = useReducer(reducer, local.inst);
 
 		useEffect(() => {
 			// setDispatcher is private, so inst is cast to any to get around it
-			(container.inst as any).setDispatcher(dispatcher);
+			(local.inst as any).setDispatcher(dispatcher);
 
 			return () => {
-				(container.inst as any).setDispatcher(null);
-				(container as any) = null;
+				if (container) {
+					(container.inst as any).setDispatcher(null);
+					container = null;
+				}
 			};
 			// eslint-disable-next-line
 		}, []);
 
-		return <container.Context.Provider value={state}>{props.children}</container.Context.Provider>;
+		return <local.Context.Provider value={state}>{props.children}</local.Context.Provider>;
 	};
 
 	// Public Context
