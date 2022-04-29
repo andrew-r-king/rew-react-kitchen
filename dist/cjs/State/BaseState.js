@@ -30,9 +30,6 @@ var BaseState = /** @class */ (function () {
         this.deferred = [];
         this.deferCount = 0;
         this.isDeferring = false;
-        this.setDispatcher = function (dispatcher) {
-            _this.dispatch = dispatcher;
-        };
         this.reset = function () {
             var isServer = typeof window === "undefined";
             if (isServer)

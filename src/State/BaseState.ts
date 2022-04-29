@@ -9,10 +9,6 @@ export abstract class BaseState {
 	private deferCount: number = 0;
 	private isDeferring: boolean = false;
 
-	protected setDispatcher = (dispatcher: Optional<React.Dispatch<ActionEvent>>) => {
-		this.dispatch = dispatcher;
-	};
-
 	reset = () => {
 		const isServer = typeof window === "undefined";
 		if (isServer) return;

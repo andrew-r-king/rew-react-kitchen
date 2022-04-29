@@ -1,4 +1,4 @@
-import React, { useReducer, useContext, useEffect, PropsWithChildren } from "react";
+import React, { useReducer, useContext, useEffect, PropsWithChildren, useMemo } from "react";
 
 import { BaseState } from "./BaseState";
 import { ClassType, Optional } from "../Types";
@@ -32,7 +32,11 @@ export function createStore<T extends BaseState>(
 		if (!container) {
 			return postContainer().inst;
 		} else {
-			container.inst = new classConstructor(...args);
+			const newInst = new classConstructor(...args);
+			for (const [key, value] of Object.entries(newInst)) {
+				if (typeof value === "function" || key === "dispatch") continue;
+				container.inst[key] = value;
+			}
 		}
 		return container.inst;
 	};
@@ -48,16 +52,16 @@ export function createStore<T extends BaseState>(
 	};
 
 	const Provider = (props: PropsWithChildren<object>) => {
-		const local = React.useMemo(() => postContainer(), []);
+		const local = useMemo(() => postContainer(), []);
 		const [state, dispatcher] = useReducer(reducer, local.inst);
 
 		useEffect(() => {
-			// setDispatcher is private, so inst is cast to any to get around it
-			(local.inst as any).setDispatcher(dispatcher);
+			// dispatch is private, so inst is cast to any to get around it
+			(local.inst as any).dispatch = dispatcher;
 
 			return () => {
 				if (container) {
-					(container.inst as any).setDispatcher(null);
+					(container.inst as any).dispatch = null;
 					container = null;
 				}
 			};
@@ -68,7 +72,7 @@ export function createStore<T extends BaseState>(
 	};
 
 	// Public Context
-	const Context = () => useContext(postContainer().Context);
+	const ContextHook = () => useContext(postContainer().Context);
 
 	// Public getter
 	const getInstance = (): T => {
@@ -78,5 +82,5 @@ export function createStore<T extends BaseState>(
 		return container.inst;
 	};
 
-	return [Provider, Context, getInstance];
+	return [Provider, ContextHook, getInstance];
 }

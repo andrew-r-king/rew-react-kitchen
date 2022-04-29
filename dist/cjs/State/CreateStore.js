@@ -63,7 +63,13 @@ function createStore(classConstructor) {
             return postContainer().inst;
         }
         else {
-            container.inst = new (classConstructor.bind.apply(classConstructor, __spreadArray([void 0], args, false)))();
+            var newInst = new (classConstructor.bind.apply(classConstructor, __spreadArray([void 0], args, false)))();
+            for (var _i = 0, _a = Object.entries(newInst); _i < _a.length; _i++) {
+                var _b = _a[_i], key = _b[0], value = _b[1];
+                if (typeof value === "function" || key === "dispatch")
+                    continue;
+                container.inst[key] = value;
+            }
         }
         return container.inst;
     };
@@ -76,21 +82,23 @@ function createStore(classConstructor) {
         }
     };
     var Provider = function (props) {
-        var container = react_1.default.useMemo(function () { return postContainer(); }, []);
-        var _a = (0, react_1.useReducer)(reducer, container.inst), state = _a[0], dispatcher = _a[1];
+        var local = (0, react_1.useMemo)(function () { return postContainer(); }, []);
+        var _a = (0, react_1.useReducer)(reducer, local.inst), state = _a[0], dispatcher = _a[1];
         (0, react_1.useEffect)(function () {
-            // setDispatcher is private, so inst is cast to any to get around it
-            container.inst.setDispatcher(dispatcher);
+            // dispatch is private, so inst is cast to any to get around it
+            local.inst.dispatch = dispatcher;
             return function () {
-                container.inst.setDispatcher(null);
-                container = null;
+                if (container) {
+                    container.inst.dispatch = null;
+                    container = null;
+                }
             };
             // eslint-disable-next-line
         }, []);
-        return react_1.default.createElement(container.Context.Provider, { value: state }, props.children);
+        return react_1.default.createElement(local.Context.Provider, { value: state }, props.children);
     };
     // Public Context
-    var Context = function () { return (0, react_1.useContext)(postContainer().Context); };
+    var ContextHook = function () { return (0, react_1.useContext)(postContainer().Context); };
     // Public getter
     var getInstance = function () {
         if (!container) {
@@ -98,7 +106,7 @@ function createStore(classConstructor) {
         }
         return container.inst;
     };
-    return [Provider, Context, getInstance];
+    return [Provider, ContextHook, getInstance];
 }
 exports.createStore = createStore;
 //# sourceMappingURL=CreateStore.js.map
