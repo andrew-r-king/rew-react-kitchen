@@ -54,18 +54,20 @@ export function createStore(classConstructor) {
         }
     };
     var Provider = function (props) {
-        var container = React.useMemo(function () { return postContainer(); }, []);
-        var _a = useReducer(reducer, container.inst), state = _a[0], dispatcher = _a[1];
+        var local = React.useMemo(function () { return postContainer(); }, []);
+        var _a = useReducer(reducer, local.inst), state = _a[0], dispatcher = _a[1];
         useEffect(function () {
             // setDispatcher is private, so inst is cast to any to get around it
-            container.inst.setDispatcher(dispatcher);
+            local.inst.setDispatcher(dispatcher);
             return function () {
-                container.inst.setDispatcher(null);
-                container = null;
+                if (container) {
+                    container.inst.setDispatcher(null);
+                    container = null;
+                }
             };
             // eslint-disable-next-line
         }, []);
-        return React.createElement(container.Context.Provider, { value: state }, props.children);
+        return React.createElement(local.Context.Provider, { value: state }, props.children);
     };
     // Public Context
     var Context = function () { return useContext(postContainer().Context); };
