@@ -98,11 +98,10 @@ function createStore(classConstructor) {
     };
     // Public getter
     var getInstance = function () {
-        var value = getValue();
-        if (value.dispatch === null) {
+        if (ctx === null) {
             throw new Error("Store getter for ".concat(classConstructor.name, " called outside of its context."));
         }
-        return value;
+        return getValue();
     };
     return [Provider, ContextHook, getInstance];
 }

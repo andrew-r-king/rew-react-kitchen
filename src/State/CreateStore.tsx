@@ -69,11 +69,10 @@ export function createStore<T extends BaseState>(
 
 	// Public getter
 	const getInstance = (): T => {
-		const value = getValue();
-		if ((value as any).dispatch === null) {
+		if (ctx === null) {
 			throw new Error(`Store getter for ${classConstructor.name} called outside of its context.`);
 		}
-		return value;
+		return getValue();
 	};
 
 	return [Provider, ContextHook, getInstance];
