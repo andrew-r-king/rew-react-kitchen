@@ -18,38 +18,32 @@ var __spreadArray = (this && this.__spreadArray) || function (to, from, pack) {
     }
     return to.concat(ar || Array.prototype.slice.call(from));
 };
-import React, { useReducer, useContext, useEffect, useMemo } from "react";
+import React, { useReducer, useContext, useEffect } from "react";
 import { ActionType } from "./ActionType";
 export function createStore(classConstructor) {
     var args = [];
     for (var _i = 1; _i < arguments.length; _i++) {
         args[_i - 1] = arguments[_i];
     }
-    var container = null;
-    var postContainer = function () {
-        if (!container) {
-            var inst = new (classConstructor.bind.apply(classConstructor, __spreadArray([void 0], args, false)))();
-            container = {
-                inst: inst,
-                Context: React.createContext(inst),
-            };
+    var ctx = null;
+    var getValue = function () {
+        if (!ctx) {
+            ctx = React.createContext(new (classConstructor.bind.apply(classConstructor, __spreadArray([void 0], args, false)))());
         }
-        return container;
+        return ctx._currentValue;
     };
-    var initialize = function (_state) {
-        if (!container) {
-            return postContainer().inst;
+    var initialize = function (state) {
+        if (!state) {
+            state = getValue();
         }
-        else {
-            var newInst = new (classConstructor.bind.apply(classConstructor, __spreadArray([void 0], args, false)))();
-            for (var _i = 0, _a = Object.entries(newInst); _i < _a.length; _i++) {
-                var _b = _a[_i], key = _b[0], value = _b[1];
-                if (typeof value === "function" || key === "dispatch")
-                    continue;
-                container.inst[key] = value;
-            }
+        var newInst = new (classConstructor.bind.apply(classConstructor, __spreadArray([void 0], args, false)))();
+        for (var _i = 0, _a = Object.entries(newInst); _i < _a.length; _i++) {
+            var _b = _a[_i], key = _b[0], value = _b[1];
+            if (typeof value === "function" || key === "dispatch")
+                continue;
+            state[key] = value;
         }
-        return container.inst;
+        return state;
     };
     var reducer = function (state, action) {
         switch (action.type) {
@@ -60,29 +54,33 @@ export function createStore(classConstructor) {
         }
     };
     var Provider = function (props) {
-        var local = useMemo(function () { return postContainer(); }, []);
-        var _a = useReducer(reducer, local.inst), state = _a[0], dispatcher = _a[1];
+        var _a = useReducer(reducer, undefined, getValue), state = _a[0], dispatcher = _a[1];
         useEffect(function () {
             // dispatch is private, so inst is cast to any to get around it
-            local.inst.dispatch = dispatcher;
+            getValue().dispatch = dispatcher;
             return function () {
-                if (container) {
-                    container.inst.dispatch = null;
-                    container = null;
-                }
+                getValue().dispatch = null;
+                ctx = null;
             };
             // eslint-disable-next-line
         }, []);
-        return React.createElement(local.Context.Provider, { value: state }, props.children);
+        var CtxProvider = ctx.Provider;
+        return React.createElement(CtxProvider, { value: state }, props.children);
     };
     // Public Context
-    var ContextHook = function () { return useContext(postContainer().Context); };
+    var ContextHook = function () {
+        if (ctx === null) {
+            throw new Error("Store hook for ".concat(classConstructor.name, " called outside of its context."));
+        }
+        return useContext(ctx);
+    };
     // Public getter
     var getInstance = function () {
-        if (!container) {
+        var value = getValue();
+        if (value.dispatch === null) {
             throw new Error("Store getter for ".concat(classConstructor.name, " called outside of its context."));
         }
-        return container.inst;
+        return value;
     };
     return [Provider, ContextHook, getInstance];
 }

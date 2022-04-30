@@ -1,4 +1,4 @@
-import React, { useReducer, useContext, useEffect, PropsWithChildren, useMemo } from "react";
+import React, { useReducer, useContext, useEffect, PropsWithChildren } from "react";
 
 import { BaseState } from "./BaseState";
 import { ClassType, Optional } from "../Types";
@@ -6,42 +6,32 @@ import { ActionEvent, ActionType } from "./ActionType";
 
 export type StoreProvider = (props: PropsWithChildren<object>) => JSX.Element;
 
-type InternalContext<T extends BaseState> = {
-	inst: T;
-	Context: React.Context<T>;
-};
-
 export function createStore<T extends BaseState>(
 	classConstructor: ClassType<T>,
 	...args: any[]
 ): [StoreProvider, () => T, () => T] {
-	let container: Optional<InternalContext<T>> = null;
+	let ctx: Optional<React.Context<T>> = null;
 
-	const postContainer = (): InternalContext<T> => {
-		if (!container) {
-			const inst = new classConstructor(...args);
-			container = {
-				inst,
-				Context: React.createContext(inst),
-			};
+	const getValue = (): T => {
+		if (!ctx) {
+			ctx = React.createContext(new classConstructor(...args));
 		}
-		return container;
+		return (ctx as any)._currentValue as T;
 	};
 
-	const initialize = (_state: T) => {
-		if (!container) {
-			return postContainer().inst;
-		} else {
-			const newInst = new classConstructor(...args);
-			for (const [key, value] of Object.entries(newInst)) {
-				if (typeof value === "function" || key === "dispatch") continue;
-				container.inst[key] = value;
-			}
+	const initialize = (state?: T): T => {
+		if (!state) {
+			state = getValue();
 		}
-		return container.inst;
+		const newInst = new classConstructor(...args);
+		for (const [key, value] of Object.entries(newInst)) {
+			if (typeof value === "function" || key === "dispatch") continue;
+			state[key] = value;
+		}
+		return state;
 	};
 
-	const reducer = (state: T, action: ActionEvent<T>) => {
+	const reducer = (state: T, action: ActionEvent<T>): T => {
 		switch (action.type) {
 			case ActionType.Bound:
 				return { ...action.payload } as T; // payload is inst, as "this"
@@ -52,34 +42,38 @@ export function createStore<T extends BaseState>(
 	};
 
 	const Provider = (props: PropsWithChildren<object>) => {
-		const local = useMemo(() => postContainer(), []);
-		const [state, dispatcher] = useReducer(reducer, local.inst);
+		const [state, dispatcher] = useReducer(reducer, undefined, getValue);
 
 		useEffect(() => {
 			// dispatch is private, so inst is cast to any to get around it
-			(local.inst as any).dispatch = dispatcher;
+			(getValue() as any).dispatch = dispatcher;
 
 			return () => {
-				if (container) {
-					(container.inst as any).dispatch = null;
-					container = null;
-				}
+				(getValue() as any).dispatch = null;
+				ctx = null;
 			};
 			// eslint-disable-next-line
 		}, []);
 
-		return <local.Context.Provider value={state}>{props.children}</local.Context.Provider>;
+		const CtxProvider = ctx!.Provider;
+		return <CtxProvider value={state}>{props.children}</CtxProvider>;
 	};
 
 	// Public Context
-	const ContextHook = () => useContext(postContainer().Context);
+	const ContextHook = () => {
+		if (ctx === null) {
+			throw new Error(`Store hook for ${classConstructor.name} called outside of its context.`);
+		}
+		return useContext(ctx);
+	};
 
 	// Public getter
 	const getInstance = (): T => {
-		if (!container) {
+		const value = getValue();
+		if ((value as any).dispatch === null) {
 			throw new Error(`Store getter for ${classConstructor.name} called outside of its context.`);
 		}
-		return container.inst;
+		return value;
 	};
 
 	return [Provider, ContextHook, getInstance];
