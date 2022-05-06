@@ -13,6 +13,5 @@ Object.defineProperty(exports, "__esModule", { value: true });
 __exportStar(require("./Api"), exports);
 __exportStar(require("./Hooks"), exports);
 __exportStar(require("./Router"), exports);
-__exportStar(require("./State"), exports);
 __exportStar(require("./Types"), exports);
 //# sourceMappingURL=index.js.map

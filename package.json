@@ -3,7 +3,7 @@
 	"version": "0.1.46",
 	"author": "Andrew R. King",
 	"description": "A set of helpful React components designed to give one less headaches",
-	"license": "UNLICENSED",
+	"license": "MIT",
 	"main": "dist/cjs/index.js",
 	"types": "dist/esm/index.d.ts",
 	"module": "dist/esm/index.es.js",
